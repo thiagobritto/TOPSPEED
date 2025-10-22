@@ -1,4 +1,4 @@
-package com.tmb.ui.screens;
+package com.tmb.view.screens;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -21,8 +21,8 @@ import javax.swing.JPanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.tmb.ui.components.AppButtonSidebar;
-import com.tmb.ui.components.AppSidebar;
+import com.tmb.view.components.ButtonSidebar;
+import com.tmb.view.components.SidebarMainPanel;
 
 public class MainView extends JFrame {
 
@@ -61,7 +61,7 @@ public class MainView extends JFrame {
 		contentPane = new JPanel(new BorderLayout());
 		setContentPane(contentPane);
 
-		JPanel aside = new AppSidebar("/images/banners/banner_main_aside_500x1080.png");
+		JPanel aside = new SidebarMainPanel();
 		contentPane.add(aside, BorderLayout.WEST);
 
 		JLabel lblLogo = new JLabel("");
@@ -72,26 +72,21 @@ public class MainView extends JFrame {
 
 		aside.add(Box.createVerticalStrut(6));
 
-		JButton btnHome = new AppButtonSidebar("Home");
+		JButton btnHome = new ButtonSidebar("Home");
 		btnHome.addActionListener(e -> showSingleInternalFrame(new HomeView()));
 		aside.add(btnHome);
 
 		aside.add(Box.createVerticalStrut(6));
 
-		JButton btnOs = new AppButtonSidebar("OS");
-		aside.add(btnOs);
-
-		aside.add(Box.createVerticalStrut(6));
-
-		JButton btnCustomer = new AppButtonSidebar("Cliente");
+		JButton btnCustomer = new ButtonSidebar("Cliente");
 		btnCustomer.addActionListener(e -> showSingleInternalFrame(new CustomerView()));
 		aside.add(btnCustomer);
-		
+
 		aside.add(Box.createVerticalStrut(6));
 
-		JButton btnVehicle = new AppButtonSidebar("Veiculo");
-		aside.add(btnVehicle);
-
+		JButton btnOs = new ButtonSidebar("OS");
+		aside.add(btnOs);
+		
 		JPanel mainPane = new JPanel(new BorderLayout(0, 0));
 		contentPane.add(mainPane, BorderLayout.CENTER);
 

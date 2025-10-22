@@ -2,8 +2,8 @@ package com.tmb.controller;
 
 import java.util.List;
 
-import com.tmb.domain.model.Customer;
-import com.tmb.ui.screens.LoginView;
+import com.tmb.model.Customer;
+import com.tmb.view.screens.LoginView;
 
 public class LoginController {
 

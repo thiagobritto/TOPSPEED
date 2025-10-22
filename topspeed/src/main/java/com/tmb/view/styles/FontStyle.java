@@ -1,4 +1,4 @@
-package com.tmb.util;
+package com.tmb.view.styles;
 
 import java.awt.Font;
 

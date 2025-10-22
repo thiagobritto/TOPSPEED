@@ -1,10 +1,8 @@
-package com.tmb.config;
+package com.tmb.view.screens;
 
 import java.awt.Window;
 
 import com.tmb.controller.LoginController;
-import com.tmb.ui.screens.LoginView;
-import com.tmb.ui.screens.SearchView;
 
 public class ScreenFactory {
 

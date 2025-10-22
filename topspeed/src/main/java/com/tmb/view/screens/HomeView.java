@@ -1,4 +1,4 @@
-package com.tmb.ui.screens;
+package com.tmb.view.screens;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.tmb.ui.components.AppCard;
+import com.tmb.view.components.CardPanel;
 
 public class HomeView extends JInternalFrame {
 
@@ -43,7 +43,7 @@ public class HomeView extends JInternalFrame {
 		header.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		contentPane.add(header, BorderLayout.NORTH);
 		
-		AppCard card_1 = new AppCard(new Color(0,139,139));
+		CardPanel card_1 = new CardPanel(new Color(0,139,139));
 		card_1.setTextColor(Color.WHITE);
 		card_1.setTopText("Vendas");
 		card_1.setLeftText("5.000");
@@ -51,17 +51,17 @@ public class HomeView extends JInternalFrame {
 		card_1.setBottonText("Relatorio de venda de hoje.");
 		header.add(card_1);
 		
-		AppCard card_2 = new AppCard(new Color(255,140,0));
+		CardPanel card_2 = new CardPanel(new Color(255,140,0));
 		card_2.setTextColor(Color.WHITE);
 		card_2.setTopText("Vendas");
 		header.add(card_2);
 		
-		AppCard card_3 = new AppCard(new Color(0, 200, 0));
+		CardPanel card_3 = new CardPanel(new Color(0, 200, 0));
 		card_3.setTextColor(Color.WHITE);
 		card_3.setTopText("Vendas");
 		header.add(card_3);
 		
-		AppCard card_4 = new AppCard(new Color(139,0,139));
+		CardPanel card_4 = new CardPanel(new Color(139,0,139));
 		card_4.setTextColor(Color.WHITE);
 		card_4.setTopText("Vendas");
 		header.add(card_4);

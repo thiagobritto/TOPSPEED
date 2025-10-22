@@ -1,4 +1,4 @@
-package com.tmb.ui.components;
+package com.tmb.view.components;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -6,12 +6,12 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class AppBackgroundPanel extends JPanel{
+public class BackgroundPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	private Image backgroundImage;
 
-	public AppBackgroundPanel(String path) {
+	public BackgroundPanel(String path) {
 		backgroundImage = new ImageIcon(getClass().getResource(path)).getImage();
 	}
 

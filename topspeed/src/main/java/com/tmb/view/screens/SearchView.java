@@ -1,10 +1,13 @@
-package com.tmb.ui.screens;
+package com.tmb.view.screens;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -22,6 +25,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
@@ -30,15 +34,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-import com.tmb.ui.components.AppTextField;
-
 public class SearchView extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private Object[] columnNames = { "Descrição" };
 
 	private JPanel contentPane;
-	private AppTextField txtSearch;
+	private JTextField txtSearch;
 	private DefaultTableModel tableModel;
 	private JTable table;
 	private JButton btnYes;
@@ -66,8 +68,7 @@ public class SearchView extends JDialog {
 		contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setContentPane(contentPane);
 
-		txtSearch = new AppTextField();
-		txtSearch.setPlaceholder("Buscar...");
+		txtSearch = new JTextField();
 		txtSearch.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -82,6 +83,7 @@ public class SearchView extends JDialog {
 				}
 			}
 		});
+		setPlaceholder(txtSearch, "Buscar...");
 		contentPane.add(txtSearch, BorderLayout.NORTH);
 
 		tableModel = new DefaultTableModel(columnNames, 0) {
@@ -139,6 +141,29 @@ public class SearchView extends JDialog {
 			dispose();
 		});
 		btnPanel.add(btnCancel);
+	}
+	
+	private void setPlaceholder(JTextField textField, String placeholderText) {
+		textField.setText(placeholderText);
+		textField.setForeground(Color.GRAY);
+
+		textField.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (textField.getText().equals(placeholderText)) {
+					textField.setText("");
+					textField.setForeground(Color.BLACK);
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (textField.getText().isEmpty()) {
+					textField.setText(placeholderText);
+					textField.setForeground(Color.GRAY);
+				}
+			}
+		});
 	}
 
 	public void onSearch(Consumer<String> text) {

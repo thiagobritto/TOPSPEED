@@ -1,4 +1,4 @@
-package com.tmb.ui.components;
+package com.tmb.view.components;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -8,11 +8,11 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
-public class AppButtonSidebar extends JButton {
+public class ButtonSidebar extends JButton {
 
 	private static final long serialVersionUID = 1L;
 
-	public AppButtonSidebar(String text) {
+	public ButtonSidebar(String text) {
 		super(text);
 		setAlignmentX(Component.CENTER_ALIGNMENT); // Centraliza o botão
 		setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); // Expande horizontalmente

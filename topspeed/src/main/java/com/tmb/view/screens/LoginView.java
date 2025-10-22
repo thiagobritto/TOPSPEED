@@ -1,4 +1,4 @@
-package com.tmb.ui.screens;
+package com.tmb.view.screens;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -13,9 +13,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import com.tmb.controller.LoginController;
-import com.tmb.ui.components.AppBackgroundPanel;
-import com.tmb.ui.components.AppPasswordField;
-import com.tmb.ui.components.AppTextField;
+import com.tmb.view.components.BackgroundPanel;
 
 public class LoginView extends JFrame {
 
@@ -41,7 +39,7 @@ public class LoginView extends JFrame {
 		contentPane = new JPanel(new GridLayout(0, 2, 0, 0));
 		setContentPane(contentPane);
 		
-		JPanel leftPanel = new AppBackgroundPanel("/images/banners/banner_login_aside_400x600.png");
+		JPanel leftPanel = new BackgroundPanel("/images/banners/banner_login_aside_400x600.png");
 		leftPanel.setLayout(null);
 		contentPane.add(leftPanel);
 		
@@ -66,7 +64,7 @@ public class LoginView extends JFrame {
 		lblUsername.setBounds(66, 170, 74, 14);
 		rightPanel.add(lblUsername);
 		
-		txtUsername = new AppTextField();
+		txtUsername = new JTextField();
 		txtUsername.setBounds(66, 186, 261, 26);
 		rightPanel.add(txtUsername);
 		
@@ -75,7 +73,7 @@ public class LoginView extends JFrame {
 		lblPassword.setBounds(66, 230, 74, 14);
 		rightPanel.add(lblPassword);
 		
-		txtPassword = new AppPasswordField();
+		txtPassword = new JPasswordField();
 		txtPassword.setBounds(66, 246, 260, 26);
 		rightPanel.add(txtPassword);
 		

@@ -1,4 +1,4 @@
-package com.tmb.ui.components;
+package com.tmb.view.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,9 +6,9 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
-import com.tmb.util.FontStyle;
+import com.tmb.view.styles.FontStyle;
 
-public class AppCard extends AppBackgroundPanel {
+public class CardPanel extends BackgroundPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel topText;
@@ -17,16 +17,16 @@ public class AppCard extends AppBackgroundPanel {
 	private JLabel rightText;
 	private JLabel bottonText;
 
-	public AppCard() {
+	public CardPanel() {
 		this("");
 	}
 	
-	public AppCard(Color bgColor) {
+	public CardPanel(Color bgColor) {
 		this("");
 		setBackground(bgColor);
 	}
 	
-	public AppCard(String bgImagePath) {
+	public CardPanel(String bgImagePath) {
 		super(bgImagePath);
 		setLayout(new BorderLayout(5, 5));
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
