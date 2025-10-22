@@ -14,6 +14,7 @@ public class App {
 				//FlatDarkLaf.setup();
 				MainView mainView = new MainView();
 				mainView.setVisible(true);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
