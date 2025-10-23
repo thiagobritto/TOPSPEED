@@ -79,7 +79,7 @@ public class MainView extends JFrame {
 		aside.add(Box.createVerticalStrut(6));
 
 		JButton btnCustomer = new ButtonSidebar("Cliente");
-		btnCustomer.addActionListener(e -> showSingleInternalFrame(new CustomerView()));
+		btnCustomer.addActionListener(e -> showSingleInternalFrame(ScreenFactory.createCustomerView()));
 		aside.add(btnCustomer);
 
 		aside.add(Box.createVerticalStrut(6));
@@ -120,6 +120,7 @@ public class MainView extends JFrame {
 				}
 			}
 			
+			System.out.println("ok");
 			
 			desktopPane.add(internalFrame);
 		    internalFrame.setVisible(true);

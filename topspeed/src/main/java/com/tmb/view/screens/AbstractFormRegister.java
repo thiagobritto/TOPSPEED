@@ -27,9 +27,10 @@ public abstract class AbstractFormRegister extends JInternalFrame {
 	private ButtonNavBar btnDelete;
 	private ButtonNavBar btnSearch;
 	private ButtonNavBar btnCancel;
+	private StatusScreen statusScreen;
 	
 	protected enum StatusScreen {
-		PREVIEW, INSERT, UPDATE
+		BEFORE_INSERT, BEFORE_UPDATE, INSERT, UPDATE
 	}
 
 	public AbstractFormRegister() {
@@ -80,8 +81,6 @@ public abstract class AbstractFormRegister extends JInternalFrame {
 		btnCancel.setIcon(new ImageIcon(CustomerView.class.getResource("/images/icons/cancel_icon_28x28.png")));
 		btnCancel.addActionListener(e -> onCancel());
 		buttonPanel.add(btnCancel);
-
-		setStatusScreen(StatusScreen.PREVIEW);
 	}
 	
 	public abstract void onNew();
@@ -92,6 +91,8 @@ public abstract class AbstractFormRegister extends JInternalFrame {
 	public abstract void onCancel();
 	
 	public void setStatusScreen(StatusScreen status) {
+		statusScreen = status;
+		
 		btnNew.setEnabled(false);
 		btnSave.setEnabled(false);
 		btnEdit.setEnabled(false);
@@ -99,18 +100,24 @@ public abstract class AbstractFormRegister extends JInternalFrame {
 		btnSearch.setEnabled(false);
 		btnCancel.setEnabled(false);
 		
-		if (status.equals(StatusScreen.PREVIEW)) {
+		if (status.equals(StatusScreen.BEFORE_INSERT)) {
 			btnNew.setEnabled(true);
 			btnSearch.setEnabled(true);
 		} else if (status.equals(StatusScreen.INSERT)) {
 			btnSave.setEnabled(true);
 			btnCancel.setEnabled(true);
-		} else if (status.equals(StatusScreen.UPDATE)) {
-			btnNew.setEnabled(true);
+		} else if (status.equals(StatusScreen.BEFORE_UPDATE)) {
 			btnEdit.setEnabled(true);
 			btnDelete.setEnabled(true);
 			btnSearch.setEnabled(true);
+			btnCancel.setEnabled(true);
+		} else if (status.equals(StatusScreen.UPDATE)) {
+			btnSave.setEnabled(true);
 		}
+	}
+	
+	public StatusScreen getStatusScreen() {
+		return statusScreen;
 	}
 
 	private void maximizedOnOpen() {

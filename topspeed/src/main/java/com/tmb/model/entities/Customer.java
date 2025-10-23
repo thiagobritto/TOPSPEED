@@ -7,8 +7,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class Customer {
 
-	private Long id;
+	private long id;
 	private String name;
-	private String code;	
+	private String phone;	
+	private String address;	
 	
 }

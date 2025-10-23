@@ -207,7 +207,7 @@ public class SearchView extends JDialog {
 		return table.getSelectedRow();
 	}
 
-	public boolean isSelectedData() {
+	public boolean isSelectedRow() {
 		return table.getSelectedRow() >= 0;
 	}
 
