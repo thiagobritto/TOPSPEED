@@ -10,11 +10,10 @@ public class App {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
-				FlatLightLaf.setup();
 				//FlatDarkLaf.setup();
+				FlatLightLaf.setup();
 				MainView mainView = new MainView();
-				mainView.setVisible(true);
-				
+				mainView.setVisible(true);				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

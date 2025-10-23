@@ -1,4 +1,4 @@
-package com.tmb.model;
+package com.tmb.model.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
