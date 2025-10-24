@@ -1,14 +1,11 @@
 package com.tmb.view.screens;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,14 +15,19 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
@@ -45,13 +47,14 @@ public class SearchView extends JDialog {
 	private JTable table;
 	private JButton btnYes;
 	private JButton btnCancel;
+	private JLabel lblSearch;
 
 	public SearchView(Window owner) {
 		initComponents(owner);
 	}
 
 	private void initComponents(Window owner) {
-		setSize(600, 400);
+		setSize(800, 600);
 		setTitle("Buscar");
 		setIconImage(null);
 		setLocationRelativeTo(owner);
@@ -64,27 +67,41 @@ public class SearchView extends JDialog {
 			}
 		});
 
+		KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+		KeyStroke downKey = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
+
 		contentPane = new JPanel(new BorderLayout(10, 10));
 		contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setContentPane(contentPane);
+		
+		JPanel topPanel = new JPanel(new BorderLayout(5, 5));
+		contentPane.add(topPanel, BorderLayout.NORTH);
 
+		lblSearch = new JLabel("Descrição");
+		topPanel.add(lblSearch, BorderLayout.NORTH);
+		
 		txtSearch = new JTextField();
-		txtSearch.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DOWN && table.getRowCount() > 0) {
-					table.requestFocus();
-					table.setRowSelectionInterval(0, 0);
-				}
+		txtSearch.setPreferredSize(new Dimension(0, 25));
+		topPanel.add(txtSearch, BorderLayout.CENTER);
+		
+		InputMap imTxtSearch = txtSearch.getInputMap(JTextField.WHEN_FOCUSED);
+		imTxtSearch.put(enterKey, "mudarFocus");
+		imTxtSearch.put(downKey, "mudarFocus");
 
-				if (e.getKeyCode() == KeyEvent.VK_ENTER && table.getRowCount() > 0) {
+		Action mudarFocus = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (table.getRowCount() > 0) {
 					table.requestFocus();
 					table.setRowSelectionInterval(0, 0);
 				}
 			}
-		});
-		setPlaceholder(txtSearch, "Buscar...");
-		contentPane.add(txtSearch, BorderLayout.NORTH);
+		};
+
+		txtSearch.getActionMap().put("mudarFocus", mudarFocus);
 
 		tableModel = new DefaultTableModel(columnNames, 0) {
 			private static final long serialVersionUID = 1L;
@@ -103,14 +120,6 @@ public class SearchView extends JDialog {
 				btnYes.setEnabled(table.getSelectedRow() >= 0);
 			}
 		});
-		table.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_SPACE && table.getSelectedRow() >= 0) {
-					dispose();
-				}
-			}
-		});
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -122,6 +131,21 @@ public class SearchView extends JDialog {
 
 		JScrollPane tableScrollPane = new JScrollPane(table);
 		contentPane.add(tableScrollPane, BorderLayout.CENTER);
+
+		InputMap imTable = table.getInputMap(JTable.WHEN_FOCUSED);
+		imTable.put(enterKey, "selecionarLinha");
+
+		Action selecionarLinhaAction = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		};
+
+		table.getActionMap().put("selecionarLinha", selecionarLinhaAction);
 
 		JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 		contentPane.add(btnPanel, BorderLayout.SOUTH);
@@ -142,29 +166,6 @@ public class SearchView extends JDialog {
 		});
 		btnPanel.add(btnCancel);
 	}
-	
-	private void setPlaceholder(JTextField textField, String placeholderText) {
-		textField.setText(placeholderText);
-		textField.setForeground(Color.GRAY);
-
-		textField.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (textField.getText().equals(placeholderText)) {
-					textField.setText("");
-					textField.setForeground(Color.BLACK);
-				}
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (textField.getText().isEmpty()) {
-					textField.setText(placeholderText);
-					textField.setForeground(Color.GRAY);
-				}
-			}
-		});
-	}
 
 	public void onSearch(Consumer<String> text) {
 		Timer searchTimer = new Timer(300, new ActionListener() {
@@ -174,25 +175,29 @@ public class SearchView extends JDialog {
 			}
 		});
 		searchTimer.setRepeats(false); // Garante que o timer execute apenas uma vez
-		
+
 		txtSearch.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-            	searchTimer.restart();
-            }
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				searchTimer.restart();
+			}
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-            	searchTimer.restart();
-            }
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				searchTimer.restart();
+			}
 
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                // Não usado para JTextFields simples
-            }
-        });
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				// Não usado para JTextFields simples
+			}
+		});
 	}
 
+	public void setSearchTitle(String title) {
+		lblSearch.setText(title);
+	}
+	
 	public void setTableHeaders(Object... headers) {
 		this.columnNames = headers;
 		tableModel.setColumnIdentifiers(headers);

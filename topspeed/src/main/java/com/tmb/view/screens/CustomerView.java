@@ -1,8 +1,7 @@
 package com.tmb.view.screens;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Function;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,6 +9,8 @@ import javax.swing.JTextField;
 
 import com.tmb.controller.CustomerController;
 import com.tmb.model.dto.CustomerDataSearchDto;
+import com.tmb.model.dto.CustomerRegisterDto;
+import com.tmb.model.dto.CustomerUpdateDto;
 
 public class CustomerView extends AbstractFormRegister {
 
@@ -21,10 +22,8 @@ public class CustomerView extends AbstractFormRegister {
 	private JTextField txtPhone;
 	private JTextField txtAddress;
 
-	private List<CustomerDataSearchDto> customerList = new ArrayList<>();;
-
-	public CustomerView(CustomerController customerController) {
-		controller = customerController;
+	public CustomerView(Function<CustomerView, CustomerController> customerController) {
+		controller = customerController.apply(this);
 		initComponents();
 	}
 
@@ -78,34 +77,35 @@ public class CustomerView extends AbstractFormRegister {
 
 	@Override
 	public void onSave() {
-
-		setStatusScreen(StatusScreen.BEFORE_UPDATE);
+		String id = txtCode.getText();
+		String name = txtName.getText();
+		String phone = txtPhone.getText();
+		String address = txtAddress.getText();
+		
+		if (id.isBlank()) {
+			CustomerRegisterDto customerRegisterDto = new CustomerRegisterDto(name, phone, address);
+			controller.saveCustomer(customerRegisterDto);				
+			setStatusScreen(StatusScreen.BEFORE_UPDATE);
+		} else {
+			CustomerUpdateDto customerUpdateDto = new CustomerUpdateDto(Long.parseLong(id), name, phone, address);
+			// controller.updateCustomer(customerUpdateDto);
+			setStatusScreen(StatusScreen.BEFORE_UPDATE);
+		}
+		
 	}
 
 	@Override
 	public void onEdit() {
 		setStatusScreen(StatusScreen.UPDATE);
+
+		txtName.requestFocusInWindow();
+		txtName.select(0, 0);
 	}
 
 	@Override
 	public void onSearch() {
-		SearchView searchView = ScreenFactory.createSearchView();
-		searchView.setTableHeaders("ID", "NOME", "TELEFONE");
-		searchView.onSearch(text -> {
-			customerList = controller.getByName(text);
-			searchView.updateTable(customerList, d -> new Object[] { d.id(), d.name(), d.phone() });
-		});
-		searchView.setVisible(true);
-
-		if (searchView.isSelectedRow()) {
-			CustomerDataSearchDto customerDataSearchDto = customerList.get(searchView.getSelectedIndex());
-			txtCode.setText(Long.toString(customerDataSearchDto.id()));
-			txtName.setText(customerDataSearchDto.name());
-			txtPhone.setText(customerDataSearchDto.phone());
-			txtAddress.setText(customerDataSearchDto.address());
-			setStatusScreen(StatusScreen.BEFORE_UPDATE);
-		}
-
+		controller.searchCustomer();
+		requestFocus();
 	}
 
 	@Override
@@ -126,18 +126,20 @@ public class CustomerView extends AbstractFormRegister {
 	@Override
 	public void setStatusScreen(StatusScreen status) {
 		super.setStatusScreen(status);
+		setEnabledFields(status.equals(StatusScreen.UPDATE) || status.equals(StatusScreen.INSERT));
 
-		if (status.equals(StatusScreen.BEFORE_UPDATE)) {
-			setEnabledFields(false);
-		} else if (status.equals(StatusScreen.UPDATE)) {
-			setEnabledFields(true);
-		} else if (status.equals(StatusScreen.BEFORE_INSERT)) {
-			setEnabledFields(false);
-		} else if (status.equals(StatusScreen.INSERT)) {
-			setEnabledFields(true);
+		if (status.equals(StatusScreen.INSERT)) {
 			cleanFields();
 		}
+	}
 
+	public void fillFields(CustomerDataSearchDto customerDataSearchDto) {
+		txtCode.setText(Long.toString(customerDataSearchDto.id()));
+		txtName.setText(customerDataSearchDto.name());
+		txtPhone.setText(customerDataSearchDto.phone());
+		txtAddress.setText(customerDataSearchDto.address());
+		
+		setStatusScreen(StatusScreen.BEFORE_UPDATE);
 	}
 
 	private void setEnabledFields(boolean enabled) {

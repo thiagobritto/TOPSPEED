@@ -5,9 +5,9 @@ import java.awt.Window;
 import com.tmb.controller.CustomerController;
 import com.tmb.controller.LoginController;
 import com.tmb.model.dao.CustomerDao;
-import com.tmb.model.dao.DatabaseConnection;
 import com.tmb.model.dao.DatabaseFactory;
 import com.tmb.model.services.CustomerService;
+import com.tmb.model.utils.CustomerValidator;
 
 public class ScreenFactory {
 
@@ -17,9 +17,9 @@ public class ScreenFactory {
 	
 	public static CustomerView createCustomerView() {
 		CustomerDao customerDao = new CustomerDao(DatabaseFactory.createDatabase());
-		CustomerService customerService = new CustomerService(customerDao);
-		CustomerController customerController = new CustomerController(customerService);
-		return new CustomerView(customerController);
+		CustomerValidator customerValidator = new CustomerValidator();
+		CustomerService customerService = new CustomerService(customerDao, customerValidator);
+		return new CustomerView(view -> new CustomerController(view, customerService));
 	}
 
 	public static SearchView createSearchView() {
