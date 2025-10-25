@@ -120,8 +120,6 @@ public class MainView extends JFrame {
 				}
 			}
 			
-			System.out.println("ok");
-			
 			desktopPane.add(internalFrame);
 		    internalFrame.setVisible(true);
 		    internalFrame.setSelected(true);

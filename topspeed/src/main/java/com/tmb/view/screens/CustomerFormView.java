@@ -7,23 +7,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.tmb.controller.CustomerController;
+import com.tmb.controller.CustomerFormController;
 import com.tmb.model.dto.CustomerDataSearchDto;
 import com.tmb.model.dto.CustomerRegisterDto;
 import com.tmb.model.dto.CustomerUpdateDto;
 
-public class CustomerView extends AbstractFormRegister {
+public class CustomerFormView extends AbstractFormView {
 
 	private static final long serialVersionUID = 1L;
-	private CustomerController controller;
+	private CustomerFormController controller;
 
 	private JTextField txtCode;
 	private JTextField txtName;
 	private JTextField txtPhone;
 	private JTextField txtAddress;
 
-	public CustomerView(Function<CustomerView, CustomerController> customerController) {
-		controller = customerController.apply(this);
+	public CustomerFormView(Function<CustomerFormView, CustomerFormController> customerFormController) {
+		controller = customerFormController.apply(this);
 		initComponents();
 	}
 
@@ -66,12 +66,12 @@ public class CustomerView extends AbstractFormRegister {
 		txtAddress.setBounds(10, 80, 505, 25);
 		formPanel.add(txtAddress);
 
-		setStatusScreen(StatusScreen.BEFORE_INSERT);
+		setFormStatus(FormStatus.INSERT_BLOCKED);
 	}
 
 	@Override
 	public void onNew() {
-		setStatusScreen(StatusScreen.INSERT);
+		setFormStatus(FormStatus.INSERT_UNLOCKED);
 		txtName.requestFocus();
 	}
 
@@ -84,20 +84,18 @@ public class CustomerView extends AbstractFormRegister {
 		
 		if (id.isBlank()) {
 			CustomerRegisterDto customerRegisterDto = new CustomerRegisterDto(name, phone, address);
-			controller.saveCustomer(customerRegisterDto);				
-			setStatusScreen(StatusScreen.BEFORE_UPDATE);
+			controller.saveCustomer(customerRegisterDto);
 		} else {
 			CustomerUpdateDto customerUpdateDto = new CustomerUpdateDto(Long.parseLong(id), name, phone, address);
-			// controller.updateCustomer(customerUpdateDto);
-			setStatusScreen(StatusScreen.BEFORE_UPDATE);
+			controller.updateCustomer(customerUpdateDto);
 		}
 		
 	}
 
 	@Override
 	public void onEdit() {
-		setStatusScreen(StatusScreen.UPDATE);
-
+		setFormStatus(FormStatus.UPDATE_UNLOCKED);
+		
 		txtName.requestFocusInWindow();
 		txtName.select(0, 0);
 	}
@@ -115,20 +113,21 @@ public class CustomerView extends AbstractFormRegister {
 
 	@Override
 	public void onCancel() {
-		StatusScreen statusScreen = getStatusScreen();
-		if (statusScreen.equals(StatusScreen.INSERT)) {
-			setStatusScreen(StatusScreen.BEFORE_INSERT);
-		} else if (statusScreen.equals(StatusScreen.BEFORE_UPDATE)) {
-			setStatusScreen(StatusScreen.BEFORE_INSERT);
+		FormStatus formStatus = getFormStatus();
+		
+		if (formStatus.equals(FormStatus.INSERT_UNLOCKED)) {
+			setFormStatus(FormStatus.INSERT_BLOCKED);
+		} else if (formStatus.equals(FormStatus.UPDATE_BLOCKED)) {
+			setFormStatus(FormStatus.INSERT_BLOCKED);
 		}
 	}
 
 	@Override
-	public void setStatusScreen(StatusScreen status) {
-		super.setStatusScreen(status);
-		setEnabledFields(status.equals(StatusScreen.UPDATE) || status.equals(StatusScreen.INSERT));
+	public void setFormStatus(FormStatus status) {
+		super.setFormStatus(status);
+		setEnabledFields(status.equals(FormStatus.UPDATE_UNLOCKED) || status.equals(FormStatus.INSERT_UNLOCKED));
 
-		if (status.equals(StatusScreen.INSERT)) {
+		if (status.equals(FormStatus.INSERT_UNLOCKED)) {
 			cleanFields();
 		}
 	}
@@ -138,8 +137,6 @@ public class CustomerView extends AbstractFormRegister {
 		txtName.setText(customerDataSearchDto.name());
 		txtPhone.setText(customerDataSearchDto.phone());
 		txtAddress.setText(customerDataSearchDto.address());
-		
-		setStatusScreen(StatusScreen.BEFORE_UPDATE);
 	}
 
 	private void setEnabledFields(boolean enabled) {

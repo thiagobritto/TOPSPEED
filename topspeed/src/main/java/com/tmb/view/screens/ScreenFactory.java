@@ -2,7 +2,7 @@ package com.tmb.view.screens;
 
 import java.awt.Window;
 
-import com.tmb.controller.CustomerController;
+import com.tmb.controller.CustomerFormController;
 import com.tmb.controller.LoginController;
 import com.tmb.model.dao.CustomerDao;
 import com.tmb.model.dao.DatabaseFactory;
@@ -15,11 +15,11 @@ public class ScreenFactory {
 		return new LoginView(LoginController::new);
 	}
 	
-	public static CustomerView createCustomerView() {
+	public static CustomerFormView createCustomerView() {
 		CustomerDao customerDao = new CustomerDao(DatabaseFactory.createDatabase());
 		CustomerValidator customerValidator = new CustomerValidator();
 		CustomerService customerService = new CustomerService(customerDao, customerValidator);
-		return new CustomerView(view -> new CustomerController(view, customerService));
+		return new CustomerFormView(view -> new CustomerFormController(view, customerService));
 	}
 
 	public static SearchView createSearchView() {

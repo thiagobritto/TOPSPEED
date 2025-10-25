@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.tmb.model.dao.CustomerDao;
 import com.tmb.model.dto.CustomerDataSearchDto;
 import com.tmb.model.dto.CustomerRegisterDto;
+import com.tmb.model.dto.CustomerUpdateDto;
 import com.tmb.model.mapper.CustomerMapper;
 import com.tmb.model.utils.BusinessException;
 import com.tmb.model.utils.CustomerValidator;
@@ -31,14 +32,10 @@ public class CustomerService {
 
 			var customer = CustomerMapper.toEntity(customerRegisterDto);
 			customerDao.insert(customer);
-
 		} catch (IllegalArgumentException e) {
-
 			logger.warn("Falha de validação ao salvar cliente: {}", e.getMessage());
 			throw e;
-
-		} catch (SQLException e) {
-			
+		} catch (SQLException e) {	
 			if (e.getMessage() != null && e.getMessage().contains("UNIQUE constraint failed")) {
 				logger.warn("Telefone duplicado detectado: {}", customerRegisterDto.phone());
 				throw new BusinessException(
@@ -47,6 +44,27 @@ public class CustomerService {
 
 			logger.error("Erro ao salvar cliente: {}", e.getMessage(), e);
 			throw new RuntimeException("Ocorreu um erro inesperado ao salvar o cliente. Tente novamente.");
+		}
+	}
+
+	public void update(CustomerUpdateDto customerUpdateDto) {
+		try {
+			customerValidator.validate(customerUpdateDto);
+
+			var customer = CustomerMapper.toEntity(customerUpdateDto);
+			customerDao.update(customer);
+		} catch (IllegalArgumentException e) {
+			logger.warn("Falha de validação ao atualizar cliente: {}", e.getMessage());
+			throw e;
+		} catch (SQLException e) {
+			if (e.getMessage() != null && e.getMessage().contains("UNIQUE constraint failed")) {
+				logger.warn("Telefone duplicado detectado: {}", customerUpdateDto.phone());
+				throw new BusinessException(
+						"Já existe um cliente cadastrado com o telefone " + customerUpdateDto.phone() + ".");
+			}
+
+			logger.error("Erro ao atualizar cliente: {}", e.getMessage(), e);
+			throw new RuntimeException("Ocorreu um erro inesperado ao atualizar o cliente. Tente novamente.");
 		}
 	}
 
