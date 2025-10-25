@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import com.tmb.model.dao.CustomerDao;
 import com.tmb.model.dto.CustomerDataSearchDto;
 import com.tmb.model.dto.CustomerRegisterDto;
 import com.tmb.model.dto.CustomerUpdateDto;
@@ -61,7 +62,7 @@ public class CustomerFormController {
 		searchView.setTableHeaders("ID", "NOME", "TELEFONE");
 		searchView.onSearch(text -> {
 			customerList = customerService.getByName(text);
-			searchView.updateTable(customerList, d -> new Object[] { d.id(), d.name(), d.phone() });
+			searchView.updateTable(customerList, c -> new Object[] { c.id(), c.name(), c.phone() });
 		});
 		searchView.setVisible(true);
 
@@ -69,6 +70,21 @@ public class CustomerFormController {
 			CustomerDataSearchDto customerDataSearchDto = customerList.get(searchView.getSelectedIndex());
 			view.fillFields(customerDataSearchDto);
 			view.setFormStatus(FormStatus.UPDATE_BLOCKED);
+		}
+	}
+	
+	public void deleteCustomer(long id) {
+		try {
+			customerService.delete(id);
+			view.setFormStatus(FormStatus.INSERT_BLOCKED);
+			view.cleanFields();
+			
+			JOptionPane.showMessageDialog(view, "Cliente removido com sucesso!");
+		} catch (IllegalArgumentException | BusinessException e) {
+			JOptionPane.showMessageDialog(view, e.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(view, "Erro inesperado: " + e.getMessage(), "Erro",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

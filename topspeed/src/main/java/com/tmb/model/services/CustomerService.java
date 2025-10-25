@@ -67,6 +67,19 @@ public class CustomerService {
 			throw new RuntimeException("Ocorreu um erro inesperado ao atualizar o cliente. Tente novamente.");
 		}
 	}
+	
+	public void delete(long id) {
+		try {
+			customerValidator.validate(id);
+			customerDao.delete(id);	
+		} catch (IllegalArgumentException e) {
+			logger.warn("Falha de validação ao remover cliente: {}", e.getMessage());
+			throw e;
+		} catch (SQLException e) {
+			logger.error("Erro ao remover cliente: {}", e.getMessage(), e);
+			throw new RuntimeException("Ocorreu um erro inesperado ao tentar remover o cliente. Tente novamente.");
+		}
+	}
 
 	public List<CustomerDataSearchDto> getByName(String name) {
 		try {

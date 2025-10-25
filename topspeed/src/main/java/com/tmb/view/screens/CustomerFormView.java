@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.util.function.Function;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -71,7 +72,9 @@ public class CustomerFormView extends AbstractFormView {
 
 	@Override
 	public void onNew() {
+		cleanFields();
 		setFormStatus(FormStatus.INSERT_UNLOCKED);
+
 		txtName.requestFocus();
 	}
 
@@ -81,7 +84,7 @@ public class CustomerFormView extends AbstractFormView {
 		String name = txtName.getText();
 		String phone = txtPhone.getText();
 		String address = txtAddress.getText();
-		
+
 		if (id.isBlank()) {
 			CustomerRegisterDto customerRegisterDto = new CustomerRegisterDto(name, phone, address);
 			controller.saveCustomer(customerRegisterDto);
@@ -89,13 +92,12 @@ public class CustomerFormView extends AbstractFormView {
 			CustomerUpdateDto customerUpdateDto = new CustomerUpdateDto(Long.parseLong(id), name, phone, address);
 			controller.updateCustomer(customerUpdateDto);
 		}
-		
 	}
 
 	@Override
 	public void onEdit() {
 		setFormStatus(FormStatus.UPDATE_UNLOCKED);
-		
+
 		txtName.requestFocusInWindow();
 		txtName.select(0, 0);
 	}
@@ -108,13 +110,17 @@ public class CustomerFormView extends AbstractFormView {
 
 	@Override
 	public void onDelete() {
+		int option = JOptionPane.showConfirmDialog(this, "Deseja remover o cliente: " + txtName.getText(),
+				"Confirmaçãp", JOptionPane.YES_NO_OPTION);
 
+		if (option == JOptionPane.YES_OPTION) {
+			controller.deleteCustomer(Long.parseLong(txtCode.getText()));
+		}
 	}
 
 	@Override
 	public void onCancel() {
 		FormStatus formStatus = getFormStatus();
-		
 		if (formStatus.equals(FormStatus.INSERT_UNLOCKED)) {
 			setFormStatus(FormStatus.INSERT_BLOCKED);
 		} else if (formStatus.equals(FormStatus.UPDATE_BLOCKED)) {
@@ -126,10 +132,6 @@ public class CustomerFormView extends AbstractFormView {
 	public void setFormStatus(FormStatus status) {
 		super.setFormStatus(status);
 		setEnabledFields(status.equals(FormStatus.UPDATE_UNLOCKED) || status.equals(FormStatus.INSERT_UNLOCKED));
-
-		if (status.equals(FormStatus.INSERT_UNLOCKED)) {
-			cleanFields();
-		}
 	}
 
 	public void fillFields(CustomerDataSearchDto customerDataSearchDto) {
@@ -146,7 +148,7 @@ public class CustomerFormView extends AbstractFormView {
 		txtAddress.setEnabled(enabled);
 	}
 
-	private void cleanFields() {
+	public void cleanFields() {
 		txtCode.setText("");
 		txtName.setText("");
 		txtPhone.setText("");

@@ -72,7 +72,7 @@ public class CustomerDao {
 		}
 	}
 
-	public void delete(Long id) throws SQLException {
+	public void delete(long id) throws SQLException {
 		String sql = "DELETE FROM TB_CUSTOMER WHERE ID = ?";
 
 		try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {

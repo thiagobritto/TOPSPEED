@@ -18,11 +18,17 @@ public class CustomerValidator {
 		String name = customerUpdateDto.name();
 		
 		if (id < 1) {
-			throw new IllegalArgumentException("O id do cliente é obrigatorio.");
+			throw new IllegalArgumentException("O id do cliente é invalido.");
 		}
 		
 		if (name == null || name.isBlank() || name.length() < 3) {
 			throw new IllegalArgumentException("O nome do cliente é invalido: " + name);
+		}
+	}
+	
+	public void validate(long id) {
+		if (id < 1) {
+			throw new IllegalArgumentException("O id do cliente é invalido.");
 		}
 	}
 
