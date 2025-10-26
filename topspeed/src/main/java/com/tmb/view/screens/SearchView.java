@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,6 +22,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,6 +31,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -48,6 +51,7 @@ public class SearchView extends JDialog {
 	private JButton btnYes;
 	private JButton btnCancel;
 	private JLabel lblSearch;
+	private JComboBox<String> cbxFilter;
 
 	public SearchView(Window owner) {
 		initComponents(owner);
@@ -76,13 +80,31 @@ public class SearchView extends JDialog {
 		
 		JPanel topPanel = new JPanel(new BorderLayout(5, 5));
 		contentPane.add(topPanel, BorderLayout.NORTH);
+		
+		JPanel filterPanel = new JPanel(new BorderLayout(5, 5));
+		topPanel.add(filterPanel, BorderLayout.WEST);
+		
+		JLabel lblFilter = new JLabel("Filtrar por");
+		filterPanel.add(lblFilter, BorderLayout.NORTH);
+		
+		cbxFilter = new JComboBox<>(new String[] {"Descrição"});
+		cbxFilter.addItemListener(e -> {
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				Object item = e.getItem();
+				lblSearch.setText(item.toString());
+			}
+		});
+		filterPanel.add(cbxFilter, BorderLayout.CENTER);		
+		
+		JPanel searchPanel = new JPanel(new BorderLayout(5, 5));
+		topPanel.add(searchPanel, BorderLayout.CENTER);
 
-		lblSearch = new JLabel("Descrição");
-		topPanel.add(lblSearch, BorderLayout.NORTH);
+		lblSearch = new JLabel(cbxFilter.getSelectedItem().toString());
+		searchPanel.add(lblSearch, BorderLayout.NORTH);
 		
 		txtSearch = new JTextField();
 		txtSearch.setPreferredSize(new Dimension(0, 25));
-		topPanel.add(txtSearch, BorderLayout.CENTER);
+		searchPanel.add(txtSearch, BorderLayout.CENTER);
 		
 		InputMap imTxtSearch = txtSearch.getInputMap(JTextField.WHEN_FOCUSED);
 		imTxtSearch.put(enterKey, "mudarFocus");
@@ -165,6 +187,8 @@ public class SearchView extends JDialog {
 			dispose();
 		});
 		btnPanel.add(btnCancel);
+		
+		SwingUtilities.invokeLater(() -> txtSearch.requestFocus());
 	}
 
 	public void onSearch(Consumer<String> text) {
@@ -193,16 +217,25 @@ public class SearchView extends JDialog {
 			}
 		});
 	}
-
-	public void setSearchTitle(String title) {
-		lblSearch.setText(title);
+	
+	public void setFilters(String... filters) {
+		cbxFilter.removeAllItems();
+		for (String filter: filters) {
+			cbxFilter.addItem(filter);
+		}
+		
+		lblSearch.setText((filters.length > 0) ? filters[0] : "");
+	}
+	
+	public String getFilterSelected() {
+		return cbxFilter.getSelectedItem().toString();
 	}
 	
 	public void setTableHeaders(Object... headers) {
 		this.columnNames = headers;
 		tableModel.setColumnIdentifiers(headers);
 	}
-
+	
 	public <T> void updateTable(List<T> list, Function<T, Object[]> toArray) {
 		tableModel.setRowCount(0);
 		list.forEach(data -> tableModel.addRow(toArray.apply(data)));

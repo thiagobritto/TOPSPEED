@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import com.tmb.controller.CustomerFormController;
 import com.tmb.model.dto.CustomerDataSearchDto;
@@ -16,16 +17,16 @@ import com.tmb.model.dto.CustomerUpdateDto;
 public class CustomerFormView extends AbstractFormView {
 
 	private static final long serialVersionUID = 1L;
-	private CustomerFormController controller;
+	private final CustomerFormController controller;
 
 	private JTextField txtCode;
 	private JTextField txtName;
 	private JTextField txtPhone;
 	private JTextField txtAddress;
 
-	public CustomerFormView(Function<CustomerFormView, CustomerFormController> customerFormController) {
-		controller = customerFormController.apply(this);
-		initComponents();
+	public CustomerFormView(Function<CustomerFormView, CustomerFormController> controller) {
+		this.controller = controller.apply(this);
+		this.initComponents();
 	}
 
 	private void initComponents() {
@@ -67,7 +68,7 @@ public class CustomerFormView extends AbstractFormView {
 		txtAddress.setBounds(10, 80, 505, 25);
 		formPanel.add(txtAddress);
 
-		setFormStatus(FormStatus.INSERT_BLOCKED);
+		SwingUtilities.invokeLater(() -> setFormStatus(FormStatus.INSERT_BLOCKED));
 	}
 
 	@Override
@@ -92,6 +93,8 @@ public class CustomerFormView extends AbstractFormView {
 			CustomerUpdateDto customerUpdateDto = new CustomerUpdateDto(Long.parseLong(id), name, phone, address);
 			controller.updateCustomer(customerUpdateDto);
 		}
+
+		requestFocus();
 	}
 
 	@Override
@@ -115,15 +118,14 @@ public class CustomerFormView extends AbstractFormView {
 
 		if (option == JOptionPane.YES_OPTION) {
 			controller.deleteCustomer(Long.parseLong(txtCode.getText()));
+			requestFocus();
 		}
 	}
 
 	@Override
 	public void onCancel() {
 		FormStatus formStatus = getFormStatus();
-		if (formStatus.equals(FormStatus.INSERT_UNLOCKED)) {
-			setFormStatus(FormStatus.INSERT_BLOCKED);
-		} else if (formStatus.equals(FormStatus.UPDATE_BLOCKED)) {
+		if (formStatus.equals(FormStatus.INSERT_UNLOCKED) || formStatus.equals(FormStatus.UPDATE_BLOCKED)) {
 			setFormStatus(FormStatus.INSERT_BLOCKED);
 		}
 	}
@@ -132,6 +134,13 @@ public class CustomerFormView extends AbstractFormView {
 	public void setFormStatus(FormStatus status) {
 		super.setFormStatus(status);
 		setEnabledFields(status.equals(FormStatus.UPDATE_UNLOCKED) || status.equals(FormStatus.INSERT_UNLOCKED));
+	}
+
+	public void cleanFields() {
+		txtCode.setText("");
+		txtName.setText("");
+		txtPhone.setText("");
+		txtAddress.setText("");
 	}
 
 	public void fillFields(CustomerDataSearchDto customerDataSearchDto) {
@@ -146,13 +155,6 @@ public class CustomerFormView extends AbstractFormView {
 		txtName.setEnabled(enabled);
 		txtPhone.setEnabled(enabled);
 		txtAddress.setEnabled(enabled);
-	}
-
-	public void cleanFields() {
-		txtCode.setText("");
-		txtName.setText("");
-		txtPhone.setText("");
-		txtAddress.setText("");
 	}
 
 }

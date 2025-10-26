@@ -38,7 +38,7 @@ public abstract class AbstractFormView extends JInternalFrame {
 		contentPane = new JPanel(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+		buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		buttonPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
 		contentPane.add(buttonPanel, BorderLayout.NORTH);
 

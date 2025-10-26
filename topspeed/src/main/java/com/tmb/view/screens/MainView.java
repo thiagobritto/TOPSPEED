@@ -73,19 +73,28 @@ public class MainView extends JFrame {
 		aside.add(Box.createVerticalStrut(6));
 
 		JButton btnHome = new ButtonSidebar("Home");
-		btnHome.addActionListener(e -> showSingleInternalFrame(new HomeView()));
+		btnHome.addActionListener(e -> {
+			for (JInternalFrame fr: desktopPane.getAllFrames()) {
+				fr.dispose();
+			}
+			
+			HomeView homeView = new HomeView();
+			desktopPane.add(homeView);
+			homeView.setVisible(true);
+		});
 		aside.add(btnHome);
 
 		aside.add(Box.createVerticalStrut(6));
 
+		JButton btnOs = new ButtonSidebar("OS");
+		btnOs.addActionListener(e -> showSingleInternalFrame(ScreenFactory.createOSFormView()));
+		aside.add(btnOs);
+
+		aside.add(Box.createVerticalStrut(6));
+		
 		JButton btnCustomer = new ButtonSidebar("Cliente");
 		btnCustomer.addActionListener(e -> showSingleInternalFrame(ScreenFactory.createCustomerView()));
 		aside.add(btnCustomer);
-
-		aside.add(Box.createVerticalStrut(6));
-
-		JButton btnOs = new ButtonSidebar("OS");
-		aside.add(btnOs);
 		
 		JPanel mainPane = new JPanel(new BorderLayout(0, 0));
 		contentPane.add(mainPane, BorderLayout.CENTER);

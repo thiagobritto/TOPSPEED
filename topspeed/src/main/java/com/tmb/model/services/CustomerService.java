@@ -11,7 +11,7 @@ import com.tmb.model.dao.CustomerDao;
 import com.tmb.model.dto.CustomerDataSearchDto;
 import com.tmb.model.dto.CustomerRegisterDto;
 import com.tmb.model.dto.CustomerUpdateDto;
-import com.tmb.model.mapper.CustomerMapper;
+import com.tmb.model.mappers.CustomerMapper;
 import com.tmb.model.utils.BusinessException;
 import com.tmb.model.utils.CustomerValidator;
 

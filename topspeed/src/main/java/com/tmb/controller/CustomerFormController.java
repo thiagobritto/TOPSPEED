@@ -1,11 +1,9 @@
 package com.tmb.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import com.tmb.model.dao.CustomerDao;
 import com.tmb.model.dto.CustomerDataSearchDto;
 import com.tmb.model.dto.CustomerRegisterDto;
 import com.tmb.model.dto.CustomerUpdateDto;
@@ -18,9 +16,9 @@ import com.tmb.view.screens.SearchView;
 
 public class CustomerFormController {
 
-	private List<CustomerDataSearchDto> customerList = new ArrayList<>();
 	private final CustomerFormView view;
 	private final CustomerService customerService;
+	private List<CustomerDataSearchDto> customerList;
 
 	public CustomerFormController(CustomerFormView view, CustomerService customerService) {
 		this.view = view;
@@ -58,7 +56,7 @@ public class CustomerFormController {
 	public void searchCustomer() {
 		SearchView searchView = ScreenFactory.createSearchView();
 		searchView.setTitle("Localizar Cliente");
-		searchView.setSearchTitle("Nome");
+		searchView.setFilters("Nome");
 		searchView.setTableHeaders("ID", "NOME", "TELEFONE");
 		searchView.onSearch(text -> {
 			customerList = customerService.getByName(text);

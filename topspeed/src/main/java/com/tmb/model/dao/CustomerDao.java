@@ -19,7 +19,7 @@ public class CustomerDao {
 	}
 
 	public void insert(Customer customer) throws SQLException {
-		String sql = "INSERT_UNLOCKED INTO TB_CUSTOMER (NAME, PHONE, ADDRESS) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO TB_CUSTOMER (NAME, PHONE, ADDRESS) VALUES (?, ?, ?)";
 
 		try (Connection conn = db.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
