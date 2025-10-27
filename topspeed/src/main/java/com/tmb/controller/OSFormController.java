@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.tmb.model.dto.CustomerSearchDto;
 import com.tmb.model.services.OSService;
-import com.tmb.view.screens.FormStatus;
 import com.tmb.view.screens.OSFormView;
 import com.tmb.view.screens.ScreenFactory;
 import com.tmb.view.screens.SearchView;
@@ -22,13 +21,12 @@ public class OSFormController {
 		this.osService = osService;
 	}
 
-
 	public Optional<String> searchCustomer() {
 		SearchView searchView = ScreenFactory.createSearchView();
 		searchView.setTitle("Selecionar cliente");
 		searchView.setFilters("Nome");
 		searchView.setTableHeaders("ID", "NOME", "TELEFONE");
-		searchView.onSearch(text -> {
+		searchView.onSearch((filter, text) -> {
 			customerList = osService.getByName(text);
 			searchView.updateTable(customerList, c -> new Object[] { c.id(), c.name(), c.phone() });
 		});
@@ -38,8 +36,8 @@ public class OSFormController {
 			customerData = customerList.get(searchView.getSelectedIndex());
 			return Optional.of(customerData.name());
 		}
-		
+
 		return Optional.empty();
 	}
-	
+
 }

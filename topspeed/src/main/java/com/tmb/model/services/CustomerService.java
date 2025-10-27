@@ -83,7 +83,7 @@ public class CustomerService {
 
 	public List<CustomerSearchDto> getByName(String name) {
 		try {
-			return customerDao.findByName(name).stream().map(CustomerMapper::toDataSearchDto).toList();
+			return customerDao.findByName(name).stream().map(CustomerMapper::toSearchDto).toList();
 		} catch (SQLException e) {
 			logger.error("Houve um erro ao buscar clientes palo nome: " + name, e);
 			return Collections.emptyList();

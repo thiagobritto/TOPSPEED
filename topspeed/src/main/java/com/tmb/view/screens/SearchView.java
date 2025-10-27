@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.swing.AbstractAction;
@@ -38,6 +37,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+
+import com.tmb.model.utils.functions.Search;
 
 public class SearchView extends JDialog {
 
@@ -191,11 +192,11 @@ public class SearchView extends JDialog {
 		SwingUtilities.invokeLater(() -> txtSearch.requestFocus());
 	}
 
-	public void onSearch(Consumer<String> text) {
+	public void onSearch(Search search) {
 		Timer searchTimer = new Timer(300, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				text.accept(txtSearch.getText());
+				search.send(getFilterSelected(), txtSearch.getText());
 			}
 		});
 		searchTimer.setRepeats(false); // Garante que o timer execute apenas uma vez
@@ -224,7 +225,7 @@ public class SearchView extends JDialog {
 			cbxFilter.addItem(filter);
 		}
 		
-		lblSearch.setText((filters.length > 0) ? filters[0] : "");
+		lblSearch.setText(getFilterSelected());
 	}
 	
 	public String getFilterSelected() {

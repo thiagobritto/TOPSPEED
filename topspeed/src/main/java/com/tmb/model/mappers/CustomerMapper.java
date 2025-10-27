@@ -13,11 +13,13 @@ public class CustomerMapper {
 	}
 
 	public static Customer toEntity(CustomerRegisterDto customerRegisterDto) {
-		return new Customer(0, customerRegisterDto.name(), customerRegisterDto.phone(), customerRegisterDto.address());
+		return new Customer(0, 
+				customerRegisterDto.name(), 
+				customerRegisterDto.phone(), 
+				customerRegisterDto.address());
 	}
 
 	public static Customer toEntity(CustomerUpdateDto customerUpdateDto) {
-		
 		return new Customer(
 				customerUpdateDto.id(), 
 				StringUtils.nullIfEmpty(customerUpdateDto.name()), 
@@ -25,8 +27,7 @@ public class CustomerMapper {
 				StringUtils.nullIfEmpty(customerUpdateDto.address()));
 	}
 
-	public static CustomerSearchDto toDataSearchDto(Customer customer) {
-		
+	public static CustomerSearchDto toSearchDto(Customer customer) {
 		return new CustomerSearchDto(
 				customer.getId(), 
 				customer.getName(), 

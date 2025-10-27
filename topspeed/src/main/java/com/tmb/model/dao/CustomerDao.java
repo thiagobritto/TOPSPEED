@@ -18,6 +18,7 @@ public class CustomerDao {
 		this.db = db;
 	}
 
+	// insert
 	public void insert(Customer customer) throws SQLException {
 		String sql = "INSERT INTO TB_CUSTOMER (NAME, PHONE, ADDRESS) VALUES (?, ?, ?)";
 
@@ -29,16 +30,18 @@ public class CustomerDao {
 			stmt.setString(3, customer.getAddress());
 			stmt.executeUpdate();
 
-			// Recupera o ID gerado automaticamente
 			try (ResultSet rs = stmt.getGeneratedKeys()) {
-				if (rs.next()) {
-					long id = rs.getLong(1);
-					customer.setId(id);
+				if (!rs.next()) {
+					throw new SQLException("Erro ao recuperar o ID gerado automaticamente.");
 				}
+				
+				long id = rs.getLong(1);
+				customer.setId(id);
 			}
 		}
 	}
 
+	// findAll
 	public List<Customer> findAll() throws SQLException {
 		List<Customer> customers = new ArrayList<>();
 		String sql = "SELECT * FROM TB_CUSTOMER";
@@ -48,9 +51,9 @@ public class CustomerDao {
 				ResultSet rs = stmt.executeQuery(sql)) {
 
 			while (rs.next()) {
-				Customer cliente = new Customer(rs.getLong("ID"), rs.getString("NAME"), rs.getString("PHONE"),
+				Customer customer = new Customer(rs.getLong("ID"), rs.getString("NAME"), rs.getString("PHONE"),
 						rs.getString("ADDRESS"));
-				customers.add(cliente);
+				customers.add(customer);
 			}
 
 		}
@@ -58,6 +61,7 @@ public class CustomerDao {
 		return customers;
 	}
 
+	// update
 	public void update(Customer customer) throws SQLException {
 		String sql = "UPDATE TB_CUSTOMER SET NAME = ?, PHONE = ?, ADDRESS = ? WHERE ID = ?";
 
@@ -72,6 +76,7 @@ public class CustomerDao {
 		}
 	}
 
+	// delete
 	public void delete(long id) throws SQLException {
 		String sql = "DELETE FROM TB_CUSTOMER WHERE ID = ?";
 
@@ -83,6 +88,7 @@ public class CustomerDao {
 		}
 	}
 	
+	// others
 	public List<Customer> findByName(String name) throws SQLException {
 		List<Customer> customers = new ArrayList<>();
 		String sql = "SELECT * FROM TB_CUSTOMER WHERE NAME LIKE ?";

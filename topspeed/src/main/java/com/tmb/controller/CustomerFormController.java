@@ -58,7 +58,7 @@ public class CustomerFormController {
 		searchView.setTitle("Localizar Cliente");
 		searchView.setFilters("Nome");
 		searchView.setTableHeaders("ID", "NOME", "TELEFONE");
-		searchView.onSearch(text -> {
+		searchView.onSearch((filter, text) -> {
 			customerList = customerService.getByName(text);
 			searchView.updateTable(customerList, c -> new Object[] { c.id(), c.name(), c.phone() });
 		});
@@ -70,13 +70,13 @@ public class CustomerFormController {
 			view.setFormStatus(FormStatus.UPDATE_BLOCKED);
 		}
 	}
-	
+
 	public void deleteCustomer(long id) {
 		try {
 			customerService.delete(id);
 			view.setFormStatus(FormStatus.INSERT_BLOCKED);
 			view.cleanFields();
-			
+
 			JOptionPane.showMessageDialog(view, "Cliente removido com sucesso!");
 		} catch (IllegalArgumentException | BusinessException e) {
 			JOptionPane.showMessageDialog(view, e.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
