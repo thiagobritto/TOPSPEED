@@ -1,6 +1,6 @@
 package com.tmb.model.mappers;
 
-import com.tmb.model.dto.CustomerSearchDto;
+import com.tmb.model.dto.CustomerResponseDto;
 import com.tmb.model.dto.CustomerRegisterDto;
 import com.tmb.model.dto.CustomerUpdateDto;
 import com.tmb.model.entities.Customer;
@@ -27,8 +27,8 @@ public class CustomerMapper {
 				StringUtils.nullIfEmpty(customerUpdateDto.address()));
 	}
 
-	public static CustomerSearchDto toSearchDto(Customer customer) {
-		return new CustomerSearchDto(
+	public static CustomerResponseDto toResponseDto(Customer customer) {
+		return new CustomerResponseDto(
 				customer.getId(), 
 				customer.getName(), 
 				customer.getPhone(),

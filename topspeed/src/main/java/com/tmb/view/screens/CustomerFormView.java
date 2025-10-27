@@ -10,7 +10,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import com.tmb.controller.CustomerFormController;
-import com.tmb.model.dto.CustomerSearchDto;
+import com.tmb.model.dto.CustomerResponseDto;
 import com.tmb.model.dto.CustomerRegisterDto;
 import com.tmb.model.dto.CustomerUpdateDto;
 
@@ -143,11 +143,11 @@ public class CustomerFormView extends AbstractFormView {
 		txtAddress.setText("");
 	}
 
-	public void fillFields(CustomerSearchDto customerSearchDto) {
-		txtCode.setText(Long.toString(customerSearchDto.id()));
-		txtName.setText(customerSearchDto.name());
-		txtPhone.setText(customerSearchDto.phone());
-		txtAddress.setText(customerSearchDto.address());
+	public void fillFields(CustomerResponseDto customerResponseDto) {
+		txtCode.setText(Long.toString(customerResponseDto.id()));
+		txtName.setText(customerResponseDto.name());
+		txtPhone.setText(customerResponseDto.phone());
+		txtAddress.setText(customerResponseDto.address());
 	}
 
 	private void setEnabledFields(boolean enabled) {

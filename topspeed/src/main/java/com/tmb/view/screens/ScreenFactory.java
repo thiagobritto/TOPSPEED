@@ -10,6 +10,7 @@ import com.tmb.model.dao.OSDao;
 import com.tmb.model.services.CustomerService;
 import com.tmb.model.services.OSService;
 import com.tmb.model.utils.CustomerValidator;
+import com.tmb.model.utils.OSValidator;
 
 public class ScreenFactory {
 	
@@ -18,8 +19,8 @@ public class ScreenFactory {
 	}
 	
 	public static CustomerFormView createCustomerView() {
-		CustomerDao customerDao = new CustomerDao(DatabaseFactory.createDatabase());
 		CustomerValidator customerValidator = new CustomerValidator();
+		CustomerDao customerDao = new CustomerDao(DatabaseFactory.createDatabase());
 		CustomerService customerService = new CustomerService(customerDao, customerValidator);
 		
 		return new CustomerFormView(view -> new CustomerFormController(view, customerService));
@@ -27,9 +28,10 @@ public class ScreenFactory {
 	
 	public static OSFormView createOSFormView() {
 		DatabaseConnection database = DatabaseFactory.createDatabase();
-		OSDao osDao = new OSDao(database);
+		OSValidator osValidator = new OSValidator();
 		CustomerDao customerDao = new CustomerDao(database);
-		OSService osService = new OSService(customerDao, osDao);
+		OSDao osDao = new OSDao(database);
+		OSService osService = new OSService(osValidator, customerDao, osDao);
 		
 		return new OSFormView(view -> new OSFormController(view, osService));
 	}

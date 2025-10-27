@@ -1,6 +1,7 @@
 package com.tmb.view.screens;
 
 import java.awt.BorderLayout;
+import java.math.BigDecimal;
 import java.util.function.Function;
 
 import javax.swing.JButton;
@@ -11,6 +12,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import com.tmb.controller.OSFormController;
+import com.tmb.model.dto.CustomerResponseDto;
+import com.tmb.model.dto.OSRegisterDto;
+import com.tmb.model.dto.OSResponseDto;
 import com.tmb.model.entities.OSStatus;
 
 public class OSFormView extends AbstractFormView {
@@ -25,6 +29,8 @@ public class OSFormView extends AbstractFormView {
 	private JTextField txtDescription;
 	private JTextField txtValue;
 	private JButton btnSearchCustomer;
+	
+	private CustomerResponseDto customerResponseDto;
 
 	public OSFormView(Function<OSFormView, OSFormController> controller) {
 		this.controller = controller.apply(this);
@@ -60,11 +66,7 @@ public class OSFormView extends AbstractFormView {
 		btnSearchCustomer = new JButton("...");
 		btnSearchCustomer.setToolTipText("Localizar cliente");
 		btnSearchCustomer.setBounds(290, 30, 25, 25);
-		btnSearchCustomer.addActionListener(e -> {
-			controller.searchCustomer().ifPresent(name -> {
-				txtCustomerName.setText(name);
-			});
-		});
+		btnSearchCustomer.addActionListener(e -> controller.searchCustomer());
 		formPanel.add(btnSearchCustomer);
 		
 		JLabel lblDate = new JLabel("Data");
@@ -108,21 +110,23 @@ public class OSFormView extends AbstractFormView {
 
 	@Override
 	public void onNew() {
-		controller.searchCustomer().ifPresent(name -> {
-			cleanFields();
-			setFormStatus(FormStatus.INSERT_UNLOCKED);
-			
-			txtCustomerName.setText(name);
-			txtDescription.requestFocus();
-		});
+		cleanFields();
+		setFormStatus(FormStatus.INSERT_UNLOCKED);
+		
+		controller.searchCustomer();
+		txtDescription.requestFocus();
 	}
 
 	@Override
 	public void onSave() {
 		String id = txtOsId.getText();
+		String description = txtDescription.getText();
+		BigDecimal value = new BigDecimal(txtValue.getText());
+		OSStatus osStatus = OSStatus.values()[cbxOSStatus.getSelectedIndex()];
+		OSRegisterDto osRegisterDto = new OSRegisterDto(customerResponseDto, description, value, osStatus);
 		
 		if (id.isBlank()) {
-			// save
+			controller.saveOS(osRegisterDto);
 		} else {
 			// update
 		}
@@ -164,8 +168,12 @@ public class OSFormView extends AbstractFormView {
 		
 	}
 	
-	public void fillFields(String osDataSearchDto) {
-		
+	public void fillFields(OSResponseDto osResponseDto) {
+		txtOsId.setText(Long.toString(osResponseDto.id()));
+		txtCustomerName.setText(osResponseDto.customerResponseDto().name());
+		txtDate.setText(osResponseDto.createdAt().toString());
+		txtDescription.setText(osResponseDto.description());
+		txtValue.setText(osResponseDto.value().toString());
 	}
 
 	private void setEnabledFields(boolean enabled) {
@@ -177,8 +185,10 @@ public class OSFormView extends AbstractFormView {
 		txtDescription.setEnabled(enabled);
 		txtValue.setEnabled(enabled);
 	}
-
-	public void fillCustomerNameField(String name) {
-		txtCustomerName.setText(name);
+	
+	public void setCustomer(CustomerResponseDto customerResponseDto) {
+		this.customerResponseDto = customerResponseDto;
+		txtCustomerName.setText(customerResponseDto.name());
 	}
+
 }

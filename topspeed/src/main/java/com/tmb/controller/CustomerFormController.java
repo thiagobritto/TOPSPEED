@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import com.tmb.model.dto.CustomerSearchDto;
+import com.tmb.model.dto.CustomerResponseDto;
 import com.tmb.model.dto.CustomerRegisterDto;
 import com.tmb.model.dto.CustomerUpdateDto;
 import com.tmb.model.services.CustomerService;
@@ -18,7 +18,7 @@ public class CustomerFormController {
 
 	private final CustomerFormView view;
 	private final CustomerService customerService;
-	private List<CustomerSearchDto> customerList;
+	private List<CustomerResponseDto> customerList;
 
 	public CustomerFormController(CustomerFormView view, CustomerService customerService) {
 		this.view = view;
@@ -27,10 +27,12 @@ public class CustomerFormController {
 
 	public void saveCustomer(CustomerRegisterDto customerRegisterDto) {
 		try {
-			customerService.save(customerRegisterDto);
-			view.setFormStatus(FormStatus.UPDATE_BLOCKED);
-
-			JOptionPane.showMessageDialog(view, "Cliente salvo com sucesso!");
+			customerService.save(customerRegisterDto).ifPresent(customerResponseDto -> {
+				view.fillFields(customerResponseDto);
+				view.setFormStatus(FormStatus.UPDATE_BLOCKED);
+				
+				JOptionPane.showMessageDialog(view, "Cliente salvo com sucesso!");
+			});
 		} catch (IllegalArgumentException | BusinessException e) {
 			JOptionPane.showMessageDialog(view, e.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
 		} catch (Exception e) {
@@ -65,8 +67,8 @@ public class CustomerFormController {
 		searchView.setVisible(true);
 
 		if (searchView.isSelectedRow()) {
-			CustomerSearchDto customerSearchDto = customerList.get(searchView.getSelectedIndex());
-			view.fillFields(customerSearchDto);
+			CustomerResponseDto customerResponseDto = customerList.get(searchView.getSelectedIndex());
+			view.fillFields(customerResponseDto);
 			view.setFormStatus(FormStatus.UPDATE_BLOCKED);
 		}
 	}

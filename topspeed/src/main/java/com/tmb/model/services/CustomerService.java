@@ -3,13 +3,14 @@ package com.tmb.model.services;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.tmb.model.dao.CustomerDao;
-import com.tmb.model.dto.CustomerSearchDto;
 import com.tmb.model.dto.CustomerRegisterDto;
+import com.tmb.model.dto.CustomerResponseDto;
 import com.tmb.model.dto.CustomerUpdateDto;
 import com.tmb.model.mappers.CustomerMapper;
 import com.tmb.model.utils.BusinessException;
@@ -26,12 +27,15 @@ public class CustomerService {
 		this.customerValidator = customerValidator;
 	}
 
-	public void save(CustomerRegisterDto customerRegisterDto) {
+	public Optional<CustomerResponseDto> save(CustomerRegisterDto customerRegisterDto) {
 		try {
 			customerValidator.validate(customerRegisterDto);
-
+			
 			var customer = CustomerMapper.toEntity(customerRegisterDto);
 			customerDao.insert(customer);
+			
+			var customerResponseDto = CustomerMapper.toResponseDto(customer);
+			return Optional.of(customerResponseDto);
 		} catch (IllegalArgumentException e) {
 			logger.warn("Falha de validação ao salvar cliente: {}", e.getMessage());
 			throw e;
@@ -81,9 +85,9 @@ public class CustomerService {
 		}
 	}
 
-	public List<CustomerSearchDto> getByName(String name) {
+	public List<CustomerResponseDto> getByName(String name) {
 		try {
-			return customerDao.findByName(name).stream().map(CustomerMapper::toSearchDto).toList();
+			return customerDao.findByName(name).stream().map(CustomerMapper::toResponseDto).toList();
 		} catch (SQLException e) {
 			logger.error("Houve um erro ao buscar clientes palo nome: " + name, e);
 			return Collections.emptyList();

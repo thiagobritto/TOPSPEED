@@ -1,10 +1,14 @@
 package com.tmb.controller;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.tmb.model.dto.CustomerSearchDto;
+import javax.swing.JOptionPane;
+
+import com.tmb.model.dto.CustomerResponseDto;
+import com.tmb.model.dto.OSRegisterDto;
 import com.tmb.model.services.OSService;
+import com.tmb.model.utils.BusinessException;
+import com.tmb.view.screens.FormStatus;
 import com.tmb.view.screens.OSFormView;
 import com.tmb.view.screens.ScreenFactory;
 import com.tmb.view.screens.SearchView;
@@ -13,15 +17,30 @@ public class OSFormController {
 
 	private final OSFormView view;
 	private final OSService osService;
-	private List<CustomerSearchDto> customerList;
-	private CustomerSearchDto customerData;
+	private List<CustomerResponseDto> customerList;
 
 	public OSFormController(OSFormView view, OSService osService) {
 		this.view = view;
 		this.osService = osService;
 	}
 
-	public Optional<String> searchCustomer() {
+	public void saveOS(OSRegisterDto osRegisterDto) {
+		try {
+			osService.save(osRegisterDto).ifPresent(osResponseDto -> {
+				view.fillFields(osResponseDto);
+				view.setFormStatus(FormStatus.UPDATE_BLOCKED);
+				
+				JOptionPane.showMessageDialog(view, "OS salva com sucesso!");
+			});			
+		} catch (IllegalArgumentException | BusinessException e) {
+			JOptionPane.showMessageDialog(view, e.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(view, "Erro inesperado: " + e.getMessage(), "Erro",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void searchCustomer() {
 		SearchView searchView = ScreenFactory.createSearchView();
 		searchView.setTitle("Selecionar cliente");
 		searchView.setFilters("Nome");
@@ -33,11 +52,9 @@ public class OSFormController {
 		searchView.setVisible(true);
 
 		if (searchView.isSelectedRow()) {
-			customerData = customerList.get(searchView.getSelectedIndex());
-			return Optional.of(customerData.name());
+			CustomerResponseDto customerResponseDto = customerList.get(searchView.getSelectedIndex());	
+			view.setCustomer(customerResponseDto);
 		}
-
-		return Optional.empty();
 	}
 
 }
