@@ -3,7 +3,7 @@ package com.tmb.controller;
 import java.util.List;
 import java.util.Optional;
 
-import com.tmb.model.dto.CustomerDataSearchDto;
+import com.tmb.model.dto.CustomerSearchDto;
 import com.tmb.model.services.OSService;
 import com.tmb.view.screens.FormStatus;
 import com.tmb.view.screens.OSFormView;
@@ -14,8 +14,8 @@ public class OSFormController {
 
 	private final OSFormView view;
 	private final OSService osService;
-	private List<CustomerDataSearchDto> customerList;
-	private CustomerDataSearchDto customerData;
+	private List<CustomerSearchDto> customerList;
+	private CustomerSearchDto customerData;
 
 	public OSFormController(OSFormView view, OSService osService) {
 		this.view = view;

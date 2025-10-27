@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.tmb.model.dao.CustomerDao;
-import com.tmb.model.dto.CustomerDataSearchDto;
+import com.tmb.model.dto.CustomerSearchDto;
 import com.tmb.model.dto.CustomerRegisterDto;
 import com.tmb.model.dto.CustomerUpdateDto;
 import com.tmb.model.mappers.CustomerMapper;
@@ -81,7 +81,7 @@ public class CustomerService {
 		}
 	}
 
-	public List<CustomerDataSearchDto> getByName(String name) {
+	public List<CustomerSearchDto> getByName(String name) {
 		try {
 			return customerDao.findByName(name).stream().map(CustomerMapper::toDataSearchDto).toList();
 		} catch (SQLException e) {

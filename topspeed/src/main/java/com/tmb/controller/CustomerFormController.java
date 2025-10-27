@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import com.tmb.model.dto.CustomerDataSearchDto;
+import com.tmb.model.dto.CustomerSearchDto;
 import com.tmb.model.dto.CustomerRegisterDto;
 import com.tmb.model.dto.CustomerUpdateDto;
 import com.tmb.model.services.CustomerService;
@@ -18,7 +18,7 @@ public class CustomerFormController {
 
 	private final CustomerFormView view;
 	private final CustomerService customerService;
-	private List<CustomerDataSearchDto> customerList;
+	private List<CustomerSearchDto> customerList;
 
 	public CustomerFormController(CustomerFormView view, CustomerService customerService) {
 		this.view = view;
@@ -65,8 +65,8 @@ public class CustomerFormController {
 		searchView.setVisible(true);
 
 		if (searchView.isSelectedRow()) {
-			CustomerDataSearchDto customerDataSearchDto = customerList.get(searchView.getSelectedIndex());
-			view.fillFields(customerDataSearchDto);
+			CustomerSearchDto customerSearchDto = customerList.get(searchView.getSelectedIndex());
+			view.fillFields(customerSearchDto);
 			view.setFormStatus(FormStatus.UPDATE_BLOCKED);
 		}
 	}

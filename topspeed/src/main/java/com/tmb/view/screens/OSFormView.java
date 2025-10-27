@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import com.tmb.controller.OSFormController;
-import com.tmb.model.dto.CustomerDataSearchDto;
+import com.tmb.model.dto.CustomerSearchDto;
 import com.tmb.model.entities.OSStatus;
 
 public class OSFormView extends AbstractFormView {
