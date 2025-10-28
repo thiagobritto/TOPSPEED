@@ -1,8 +1,8 @@
-package com.tmb.model.utils;
+package com.tmb.model.validators;
 
 import java.math.BigDecimal;
 
-import com.tmb.model.dto.OSRegisterDto;
+import com.tmb.dto.OSRegisterDto;
 
 public class OSValidator {
 

@@ -2,8 +2,12 @@ package com.tmb.model.entities;
 
 public enum OSStatus {
 
-	APPROVED(1, "Aprovada"), IN_PROGRESS(2, "Em andamento"), COMPLETED(3, "Concluída"), CANCELED(4, "Cancelada"),
-	WAITING_MATERIALS(5, "À espera de aprovação"), WAITING_APPROVAL(6, "À espera de materiais"),
+	APPROVED(1, "Aprovada"), 
+	IN_PROGRESS(2, "Em andamento"), 
+	COMPLETED(3, "Concluída"), 
+	CANCELED(4, "Cancelada"),
+	WAITING_MATERIALS(5, "À espera de aprovação"), 
+	WAITING_APPROVAL(6, "À espera de materiais"),
 	IN_PLANNING(7, "Em planejamento");
 
 	private int id;
@@ -15,14 +19,15 @@ public enum OSStatus {
 	}
 
 	public static OSStatus valueOf(int id) {
-		for (OSStatus status : OSStatus.values()) {
+		for (OSStatus status : values()) {
 			if (status.getId() == id) {
 				return status;
 			}
 		}
-		return null;
+		
+		throw new IllegalArgumentException("Não existe um OSStatus com esse ID: " + id);
 	}
-
+	
 	public int getId() {
 		return id;
 	}

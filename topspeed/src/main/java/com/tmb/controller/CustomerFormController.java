@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import com.tmb.model.dto.CustomerResponseDto;
-import com.tmb.model.dto.CustomerRegisterDto;
-import com.tmb.model.dto.CustomerUpdateDto;
+import com.tmb.dto.CustomerRegisterDto;
+import com.tmb.dto.CustomerResponseDto;
+import com.tmb.dto.CustomerUpdateDto;
+import com.tmb.model.exceptions.BusinessException;
 import com.tmb.model.services.CustomerService;
-import com.tmb.model.utils.BusinessException;
 import com.tmb.view.screens.CustomerFormView;
 import com.tmb.view.screens.FormStatus;
 import com.tmb.view.screens.ScreenFactory;

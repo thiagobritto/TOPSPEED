@@ -1,4 +1,4 @@
-package com.tmb.model.utils.functions;
+package com.tmb.utils.functions;
 
 @FunctionalInterface
 public interface Search {

@@ -10,9 +10,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import com.tmb.controller.CustomerFormController;
-import com.tmb.model.dto.CustomerResponseDto;
-import com.tmb.model.dto.CustomerRegisterDto;
-import com.tmb.model.dto.CustomerUpdateDto;
+import com.tmb.dto.CustomerRegisterDto;
+import com.tmb.dto.CustomerResponseDto;
+import com.tmb.dto.CustomerUpdateDto;
 
 public class CustomerFormView extends AbstractFormView {
 

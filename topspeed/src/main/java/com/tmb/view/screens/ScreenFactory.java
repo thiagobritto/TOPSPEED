@@ -9,8 +9,8 @@ import com.tmb.model.dao.DatabaseFactory;
 import com.tmb.model.dao.OSDao;
 import com.tmb.model.services.CustomerService;
 import com.tmb.model.services.OSService;
-import com.tmb.model.utils.CustomerValidator;
-import com.tmb.model.utils.OSValidator;
+import com.tmb.model.validators.CustomerValidator;
+import com.tmb.model.validators.OSValidator;
 
 public class ScreenFactory {
 	

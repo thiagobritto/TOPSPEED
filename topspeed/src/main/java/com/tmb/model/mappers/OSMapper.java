@@ -1,8 +1,8 @@
 package com.tmb.model.mappers;
 
-import com.tmb.model.dto.CustomerResponseDto;
-import com.tmb.model.dto.OSRegisterDto;
-import com.tmb.model.dto.OSResponseDto;
+import com.tmb.dto.CustomerResponseDto;
+import com.tmb.dto.OSRegisterDto;
+import com.tmb.dto.OSResponseDto;
 import com.tmb.model.entities.Customer;
 import com.tmb.model.entities.OS;
 
@@ -13,11 +13,20 @@ public class OSMapper {
 	}
 	
 	public static OS toEntity(OSRegisterDto osRegisterDto) {
-		Customer customer = new Customer(
-				osRegisterDto.customerResponseDto().id(), 
-				osRegisterDto.customerResponseDto().name(), 
-				osRegisterDto.customerResponseDto().phone(), 
-				osRegisterDto.customerResponseDto().address());
+		if (osRegisterDto == null) {
+			return null;
+		}
+		
+		Customer customer = null;
+		
+		CustomerResponseDto customerResponseDto = osRegisterDto.customerResponseDto();
+		if (customerResponseDto != null) {
+			customer = new Customer(
+					customerResponseDto.id(), 
+					customerResponseDto.name(), 
+					customerResponseDto.phone(), 
+					customerResponseDto.address());
+		}
 		
 		return new OS(0, 
 				customer, 
@@ -28,11 +37,20 @@ public class OSMapper {
 	}
 	
 	public static OSResponseDto toResponseDto(OS os) {
-		CustomerResponseDto customerResponseDto = new CustomerResponseDto(
-				os.getCustomer().getId(), 
-				os.getCustomer().getName(), 
-				os.getCustomer().getPhone(), 
-				os.getCustomer().getAddress());
+		if (os == null) {
+			return null;
+		}
+		
+		CustomerResponseDto customerResponseDto = null;
+		
+		Customer customer = os.getCustomer();
+		if (customer != null) {
+			customerResponseDto = new CustomerResponseDto(
+					customer.getId(), 
+					customer.getName(), 
+					customer.getPhone(), 
+					customer.getAddress());
+		}
 		
 		return new OSResponseDto(
 				os.getId(), 

@@ -11,11 +11,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.sqlite.date.DateFormatUtils;
+
 import com.tmb.controller.OSFormController;
-import com.tmb.model.dto.CustomerResponseDto;
-import com.tmb.model.dto.OSRegisterDto;
-import com.tmb.model.dto.OSResponseDto;
+import com.tmb.dto.CustomerResponseDto;
+import com.tmb.dto.OSRegisterDto;
+import com.tmb.dto.OSResponseDto;
 import com.tmb.model.entities.OSStatus;
+import com.tmb.utils.DateTimeUtils;
+import com.tmb.view.components.PriceField;
 
 public class OSFormView extends AbstractFormView {
 
@@ -100,7 +104,7 @@ public class OSFormView extends AbstractFormView {
 		lblValue.setBounds(325, 60, 60, 15);
 		formPanel.add(lblValue);
 		
-		txtValue = new JTextField();
+		txtValue = new PriceField();
 		txtValue.setColumns(10);
 		txtValue.setBounds(325, 80, 120, 25);
 		formPanel.add(txtValue);
@@ -146,8 +150,7 @@ public class OSFormView extends AbstractFormView {
 
 	@Override
 	public void onSearch() {
-		// TODO Auto-generated method stub
-
+		controller.searchOS();
 	}
 
 	@Override
@@ -171,9 +174,10 @@ public class OSFormView extends AbstractFormView {
 	public void fillFields(OSResponseDto osResponseDto) {
 		txtOsId.setText(Long.toString(osResponseDto.id()));
 		txtCustomerName.setText(osResponseDto.customerResponseDto().name());
-		txtDate.setText(osResponseDto.createdAt().toString());
+		txtDate.setText(DateTimeUtils.formatForDisplay(osResponseDto.createdAt()));
 		txtDescription.setText(osResponseDto.description());
 		txtValue.setText(osResponseDto.value().toString());
+		cbxOSStatus.setSelectedIndex(osResponseDto.status().ordinal());
 	}
 
 	private void setEnabledFields(boolean enabled) {

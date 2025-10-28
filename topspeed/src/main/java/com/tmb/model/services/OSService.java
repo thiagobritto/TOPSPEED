@@ -8,14 +8,15 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.tmb.dto.CustomerResponseDto;
+import com.tmb.dto.OSRegisterDto;
+import com.tmb.dto.OSResponseDto;
 import com.tmb.model.dao.CustomerDao;
 import com.tmb.model.dao.OSDao;
-import com.tmb.model.dto.CustomerResponseDto;
-import com.tmb.model.dto.OSRegisterDto;
-import com.tmb.model.dto.OSResponseDto;
+import com.tmb.model.entities.OS;
 import com.tmb.model.mappers.CustomerMapper;
 import com.tmb.model.mappers.OSMapper;
-import com.tmb.model.utils.OSValidator;
+import com.tmb.model.validators.OSValidator;
 
 public class OSService {
 
@@ -48,12 +49,32 @@ public class OSService {
 		}
 	}
 	
-	public List<CustomerResponseDto> getByName(String name) {
+	public List<CustomerResponseDto> getCustomerByName(String name) {
 		try {
 			return customerDao.findByName(name).stream().map(CustomerMapper::toResponseDto).toList();
 		} catch (SQLException e) {
 			logger.error("Houve um erro ao buscar clientes palo nome: " + name, e);
 			return Collections.emptyList();
+		}
+	}
+	
+	public List<OSResponseDto> getOSByCustomerName(String name) {
+		try {
+			List<OS> osList = osDao.findByCustomerName(name);
+			return osList.stream().map(OSMapper::toResponseDto).toList();
+		} catch (SQLException e) {
+			logger.error("Houve um erro ao buscar OS palo nome do clientes: " + name, e);
+			return Collections.emptyList();
+		}
+	}
+	
+	public Optional<OSResponseDto> getOSByNumber(long id) {
+		try {
+			OS os = osDao.findById(id);
+			return Optional.ofNullable(OSMapper.toResponseDto(os));
+		} catch (SQLException e) {
+			logger.error("Houve um erro ao buscar OS palo ID: " + id, e);
+			return Optional.empty();
 		}
 	}	
 	

@@ -1,4 +1,4 @@
-package com.tmb.model.utils;
+package com.tmb.model.exceptions;
 
 public class BusinessException extends RuntimeException {
 	

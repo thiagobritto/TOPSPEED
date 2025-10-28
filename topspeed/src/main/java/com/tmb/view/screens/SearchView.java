@@ -38,7 +38,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-import com.tmb.model.utils.functions.Search;
+import com.tmb.utils.functions.Search;
 
 public class SearchView extends JDialog {
 

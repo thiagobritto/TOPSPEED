@@ -8,13 +8,13 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.tmb.dto.CustomerRegisterDto;
+import com.tmb.dto.CustomerResponseDto;
+import com.tmb.dto.CustomerUpdateDto;
 import com.tmb.model.dao.CustomerDao;
-import com.tmb.model.dto.CustomerRegisterDto;
-import com.tmb.model.dto.CustomerResponseDto;
-import com.tmb.model.dto.CustomerUpdateDto;
+import com.tmb.model.exceptions.BusinessException;
 import com.tmb.model.mappers.CustomerMapper;
-import com.tmb.model.utils.BusinessException;
-import com.tmb.model.utils.CustomerValidator;
+import com.tmb.model.validators.CustomerValidator;
 
 public class CustomerService {
 

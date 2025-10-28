@@ -1,10 +1,10 @@
 package com.tmb.model.mappers;
 
-import com.tmb.model.dto.CustomerResponseDto;
-import com.tmb.model.dto.CustomerRegisterDto;
-import com.tmb.model.dto.CustomerUpdateDto;
+import com.tmb.dto.CustomerRegisterDto;
+import com.tmb.dto.CustomerResponseDto;
+import com.tmb.dto.CustomerUpdateDto;
 import com.tmb.model.entities.Customer;
-import com.tmb.model.utils.StringUtils;
+import com.tmb.utils.StringUtils;
 
 public class CustomerMapper {
 

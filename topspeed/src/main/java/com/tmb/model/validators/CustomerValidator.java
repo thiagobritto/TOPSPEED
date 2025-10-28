@@ -1,7 +1,7 @@
-package com.tmb.model.utils;
+package com.tmb.model.validators;
 
-import com.tmb.model.dto.CustomerRegisterDto;
-import com.tmb.model.dto.CustomerUpdateDto;
+import com.tmb.dto.CustomerRegisterDto;
+import com.tmb.dto.CustomerUpdateDto;
 
 public class CustomerValidator {
 
