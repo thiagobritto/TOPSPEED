@@ -168,7 +168,12 @@ public class OSFormView extends AbstractFormView {
 	}
 	
 	public void cleanFields() {
-		
+		txtOsId.setText("");
+		txtCustomerName.setText("");
+		txtDate.setText("");
+		txtDescription.setText("");
+		txtValue.setText("");
+		cbxOSStatus.setSelectedIndex(0);
 	}
 	
 	public void fillFields(OSResponseDto osResponseDto) {

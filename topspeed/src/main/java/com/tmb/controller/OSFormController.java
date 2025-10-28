@@ -68,20 +68,24 @@ public class OSFormController {
 		String CUSTOMER = "Cliente";		
 		searchView.setFilters(NUMBER, CUSTOMER);
 		
-		searchView.setTableHeaders("ID", "CLIENTE", "VALOR", "STATUS");
+		searchView.setTableHeaders("NUMERO", "CLIENTE", "VALOR", "STATUS");
 		searchView.onSearch((filter, text) -> {
 			if (filter.equals(NUMBER) && !text.isBlank()) {
+				
 				try {
 					long id = Long.parseLong(text);
+					
 					osService.getOSByNumber(id).ifPresent(osResponseDto -> {
-						searchView.updateTable(Arrays.asList(osResponseDto), o -> new Object[] { 
+						osList = Arrays.asList(osResponseDto);
+						searchView.updateTable(osList, o -> new Object[] { 
 								o.id(), o.customerResponseDto().name(), o.value(), o.status().getName() });
 					});
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(view, "O numero: " + text + ", não e valido.", "Atenção", JOptionPane.WARNING_MESSAGE);
 				}
+				
 			} else if (filter.equals(CUSTOMER) && !text.isBlank()) {
-				osList = osService.getOSByCustomerName(text);
+				osList = osService.getOSByCustomerName(text);				
 				searchView.updateTable(osList, o -> new Object[] { 
 						o.id(), o.customerResponseDto().name(), o.value(), o.status().getName() });				
 			}
