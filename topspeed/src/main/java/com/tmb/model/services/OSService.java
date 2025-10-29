@@ -22,16 +22,16 @@ import com.tmb.model.validators.OSValidator;
 public class OSService {
 
 	private static final Logger logger = LogManager.getLogger(OSService.class);
-	private final OSValidator osValidator;
-	private final CustomerDao customerDao;
 	private final OSDao osDao;
+	private final CustomerDao customerDao;
+	private final OSValidator osValidator;
 
-	public OSService(OSValidator osValidator, CustomerDao customerDao, OSDao osDao) {
-		this.osValidator = osValidator;
-		this.customerDao = customerDao;
+	public OSService(OSDao osDao, CustomerDao customerDao, OSValidator osValidator) {
 		this.osDao = osDao;
+		this.customerDao = customerDao;
+		this.osValidator = osValidator;
 	}
-	
+
 	public Optional<OSResponseDto> save(OSRegisterDto osRegisterDto) {
 		try {
 			osValidator.validate(osRegisterDto);

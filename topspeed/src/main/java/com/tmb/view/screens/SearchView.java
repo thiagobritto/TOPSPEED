@@ -3,7 +3,6 @@ package com.tmb.view.screens;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -22,7 +21,9 @@ import javax.swing.Box;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -54,11 +55,11 @@ public class SearchView extends JDialog {
 	private JLabel lblSearch;
 	private JComboBox<String> cbxFilter;
 
-	public SearchView(Window owner) {
+	public SearchView(JFrame owner) {
 		initComponents(owner);
 	}
 
-	private void initComponents(Window owner) {
+	private void initComponents(JFrame owner) {
 		setSize(800, 600);
 		setTitle("Buscar");
 		setIconImage(null);
@@ -74,6 +75,13 @@ public class SearchView extends JDialog {
 
 		KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
 		KeyStroke downKey = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
+		KeyStroke escapeKey = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+		
+		getRootPane().registerKeyboardAction(e -> {
+			table.clearSelection();
+			dispose();
+		}, escapeKey, JComponent.WHEN_IN_FOCUSED_WINDOW);
+		
 
 		contentPane = new JPanel(new BorderLayout(10, 10));
 		contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

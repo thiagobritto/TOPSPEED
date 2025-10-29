@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.tmb.model.services.ServiceFactory;
 import com.tmb.view.components.ButtonSidebar;
 import com.tmb.view.components.SidebarMainPanel;
 
@@ -50,16 +51,26 @@ public class MainView extends JFrame {
 		menuBar.add(mnRegisters);
 
 		JMenuItem mbRegisterCustomer = new JMenuItem("Clientes");
+		mbRegisterCustomer.addActionListener(e -> showSingleInternalFrame(ScreenFactory.createCustomerView()));
 		mnRegisters.add(mbRegisterCustomer);
 
-		JMenuItem mbRegisterVehicle = new JMenuItem("Veiculos");
-		mnRegisters.add(mbRegisterVehicle);
-
 		JMenuItem mbRegisterOrderService = new JMenuItem("OS");
+		mbRegisterOrderService.addActionListener(e -> showSingleInternalFrame(ScreenFactory.createOSFormView()));
 		mnRegisters.add(mbRegisterOrderService);
+		
+		JMenu mnReports = new JMenu("Relatórios");
+		menuBar.add(mnReports);
+		
+		JMenuItem mbReportCustomer = new JMenuItem("Clientes");
+		mbReportCustomer.addActionListener(e -> {
+			ServiceFactory.createReportService().generateCustomerReport();
+		});
+		mnReports.add(mbReportCustomer);
 
 		contentPane = new JPanel(new BorderLayout());
 		setContentPane(contentPane);
+		
+		// SIDEBAR
 
 		JPanel aside = new SidebarMainPanel();
 		contentPane.add(aside, BorderLayout.WEST);
@@ -79,8 +90,9 @@ public class MainView extends JFrame {
 			}
 			
 			HomeView homeView = new HomeView();
-			desktopPane.add(homeView);
 			homeView.setVisible(true);
+			
+			desktopPane.add(homeView);
 		});
 		aside.add(btnHome);
 
@@ -96,9 +108,13 @@ public class MainView extends JFrame {
 		btnCustomer.addActionListener(e -> showSingleInternalFrame(ScreenFactory.createCustomerView()));
 		aside.add(btnCustomer);
 		
+		// MAIN PANEL
+		
 		JPanel mainPane = new JPanel(new BorderLayout(0, 0));
 		contentPane.add(mainPane, BorderLayout.CENTER);
 
+		// MAIN PANEL -> HEADER
+		
 		JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 		//header.setBackground(new Color(23, 0, 70));
 		mainPane.add(header, BorderLayout.NORTH);
@@ -109,9 +125,13 @@ public class MainView extends JFrame {
 		lblName.setIcon(new ImageIcon(userIcon.getImage().getScaledInstance(36, 36, Image.SCALE_SMOOTH)));
 		header.add(lblName);
 
+		// MAIN PANEL -> BODY
+		
 		desktopPane = new JDesktopPane();
 		mainPane.add(desktopPane, BorderLayout.CENTER);
 
+		// MAIN PANEL -> FOOTER
+		
 		JPanel footer = new JPanel();
 		mainPane.add(footer, BorderLayout.SOUTH);
 

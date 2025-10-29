@@ -7,12 +7,13 @@ import com.tmb.view.screens.MainView;
 
 public class App {
 
+	private static MainView mainView;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
-				//FlatDarkLaf.setup();
 				FlatLightLaf.setup();
-				MainView mainView = new MainView();
+				mainView = new MainView();
 				mainView.setVisible(true);				
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -20,4 +21,7 @@ public class App {
 		});
 	}
 	
+	public static MainView getMainView() {
+		return mainView;
+	}
 }

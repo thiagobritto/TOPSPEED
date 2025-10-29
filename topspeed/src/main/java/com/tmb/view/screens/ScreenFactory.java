@@ -1,5 +1,6 @@
 package com.tmb.view.screens;
 
+import com.tmb.App;
 import com.tmb.controller.CustomerFormController;
 import com.tmb.controller.LoginController;
 import com.tmb.controller.OSFormController;
@@ -19,8 +20,9 @@ public class ScreenFactory {
 	}
 	
 	public static CustomerFormView createCustomerView() {
+		DatabaseConnection database = DatabaseFactory.createDatabase();
+		CustomerDao customerDao = new CustomerDao(database);
 		CustomerValidator customerValidator = new CustomerValidator();
-		CustomerDao customerDao = new CustomerDao(DatabaseFactory.createDatabase());
 		CustomerService customerService = new CustomerService(customerDao, customerValidator);
 		
 		return new CustomerFormView(view -> new CustomerFormController(view, customerService));
@@ -28,10 +30,10 @@ public class ScreenFactory {
 	
 	public static OSFormView createOSFormView() {
 		DatabaseConnection database = DatabaseFactory.createDatabase();
-		OSValidator osValidator = new OSValidator();
-		CustomerDao customerDao = new CustomerDao(database);
 		OSDao osDao = new OSDao(database);
-		OSService osService = new OSService(osValidator, customerDao, osDao);
+		CustomerDao customerDao = new CustomerDao(database);
+		OSValidator osValidator = new OSValidator();
+		OSService osService = new OSService(osDao, customerDao, osValidator);
 		
 		return new OSFormView(view -> new OSFormController(view, osService));
 	}
@@ -41,7 +43,7 @@ public class ScreenFactory {
 	}
 
 	public static SearchView createSearchView() {
-		return new SearchView(null);
+		return new SearchView(App.getMainView());
 	}
 
 }
