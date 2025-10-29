@@ -2,36 +2,30 @@ package com.tmb.model.entities;
 
 public enum OSStatus {
 
-	APPROVED(1, "Aprovada"), 
-	IN_PROGRESS(2, "Em andamento"), 
-	COMPLETED(3, "Concluída"), 
-	CANCELED(4, "Cancelada"),
-	WAITING_MATERIALS(5, "À espera de aprovação"), 
-	WAITING_APPROVAL(6, "À espera de materiais"),
-	IN_PLANNING(7, "Em planejamento");
+	APPROVED("Aprovada"), 
+	IN_PROGRESS("Em andamento"), 
+	COMPLETED("Concluída"), 
+	CANCELED("Cancelada"),
+	WAITING_MATERIALS("À espera de aprovação"), 
+	WAITING_APPROVAL("À espera de materiais"),
+	IN_PLANNING("Em planejamento");
 
-	private int id;
 	private String name;
 
-	private OSStatus(int id, String name) {
-		this.id = id;
+	private OSStatus(String name) {
 		this.name = name;
 	}
 
-	public static OSStatus valueOf(int id) {
+	public static OSStatus fromName(String name) {
 		for (OSStatus status : values()) {
-			if (status.getId() == id) {
+			if (status.getName().equals(name)) {
 				return status;
 			}
 		}
 		
-		throw new IllegalArgumentException("Não existe um OSStatus com esse ID: " + id);
+		throw new IllegalArgumentException("Não existe um OSStatus com esse Nome: " + name);
 	}
 	
-	public int getId() {
-		return id;
-	}
-
 	public String getName() {
 		return name;
 	}

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import com.tmb.dto.CustomerResponseDto;
 import com.tmb.dto.OSRegisterDto;
 import com.tmb.dto.OSResponseDto;
+import com.tmb.dto.OSUpdateDto;
 import com.tmb.model.dao.CustomerDao;
 import com.tmb.model.dao.OSDao;
 import com.tmb.model.entities.OS;
@@ -49,7 +50,22 @@ public class OSService {
 		}
 	}
 	
-	public List<CustomerResponseDto> getCustomerByName(String name) {
+	public void update(OSUpdateDto osUpdateDto) {
+		try {
+			osValidator.validate(osUpdateDto);
+
+			var os = OSMapper.toEntity(osUpdateDto);
+			osDao.update(os);
+		} catch (IllegalArgumentException e) {
+			logger.warn("Falha de validação ao atualizar OS: {}", e.getMessage());
+			throw e;
+		} catch (SQLException e) {
+			logger.error("Erro ao atualizar OS: {}", e.getMessage(), e);
+			throw new RuntimeException("Ocorreu um erro inesperado ao atualizar a OS. Tente novamente.");
+		}
+	}
+	
+	public List<CustomerResponseDto> getCustomersByName(String name) {
 		try {
 			return customerDao.findByName(name).stream().map(CustomerMapper::toResponseDto).toList();
 		} catch (SQLException e) {
@@ -58,7 +74,7 @@ public class OSService {
 		}
 	}
 	
-	public List<OSResponseDto> getOSByCustomerName(String name) {
+	public List<OSResponseDto> getAllOSByCustomerName(String name) {
 		try {
 			List<OS> osList = osDao.findByCustomerName(name);
 			return osList.stream().map(OSMapper::toResponseDto).toList();
@@ -75,6 +91,19 @@ public class OSService {
 		} catch (SQLException e) {
 			logger.error("Houve um erro ao buscar OS palo ID: " + id, e);
 			return Optional.empty();
+		}
+	}
+
+	public void delete(long id) {
+		try {
+			osValidator.validate(id);
+			osDao.delete(id);	
+		} catch (IllegalArgumentException e) {
+			logger.warn("Falha de validação ao excluir OS: {}", e.getMessage());
+			throw e;
+		} catch (SQLException e) {
+			logger.error("Erro ao excluir OS: {}", e.getMessage(), e);
+			throw new RuntimeException("Ocorreu um erro inesperado ao tentar remover o cliente. Tente novamente.");
 		}
 	}	
 	

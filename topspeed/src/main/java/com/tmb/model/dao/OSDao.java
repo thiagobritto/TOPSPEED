@@ -31,7 +31,7 @@ public class OSDao {
 			stmt.setLong(1, os.getCustomer().getId());
 			stmt.setString(2, os.getDescription());
 			stmt.setBigDecimal(3, os.getValue());
-			stmt.setInt(4, os.getStatus().getId());
+			stmt.setString(4, os.getStatus().getName());
 			stmt.executeUpdate();
 
 			try (ResultSet rs = stmt.getGeneratedKeys()) {
@@ -66,7 +66,7 @@ public class OSDao {
 			stmt.setLong(1, os.getCustomer().getId());
 			stmt.setString(2, os.getDescription());
 			stmt.setBigDecimal(3, os.getValue());
-			stmt.setInt(4, os.getStatus().getId());
+			stmt.setString(4, os.getStatus().getName());
 			stmt.setLong(5, os.getId());
 			stmt.executeUpdate();
 
@@ -74,6 +74,17 @@ public class OSDao {
 	}
 
 	// delete
+	public void delete(long id) throws SQLException {
+		String sql = "DELETE FROM TB_OS WHERE ID = ?";
+
+		try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+			stmt.setLong(1, id);
+			stmt.executeUpdate();
+
+		}
+	}
+	
 	// others
 	public OS findById(long id) throws SQLException {
 		String sql = """
@@ -114,7 +125,7 @@ public class OSDao {
 						rs.getString("DESCRIPTION"), 
 						rs.getBigDecimal("VALUE"), 
 						DateTimeUtils.parseSQLiteDate(rs.getString("CREATED_AT")), 
-						OSStatus.valueOf(rs.getInt("STATUS")));
+						OSStatus.fromName(rs.getString("STATUS")));
 				
 				return os;
 			}
@@ -160,7 +171,7 @@ public class OSDao {
 							rs.getString("DESCRIPTION"), 
 							rs.getBigDecimal("VALUE"), 
 							DateTimeUtils.parseSQLiteDate(rs.getString("CREATED_AT")), 
-							OSStatus.valueOf(rs.getInt("STATUS")));
+							OSStatus.fromName(rs.getString("STATUS")));
 					
 					oss.add(os);	
 				}

@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import com.tmb.dto.CustomerResponseDto;
 import com.tmb.dto.OSRegisterDto;
 import com.tmb.dto.OSResponseDto;
+import com.tmb.dto.OSUpdateDto;
 import com.tmb.model.exceptions.BusinessException;
 import com.tmb.model.services.OSService;
 import com.tmb.view.screens.FormStatus;
@@ -30,8 +31,8 @@ public class OSFormController {
 	public void saveOS(OSRegisterDto osRegisterDto) {
 		try {
 			osService.save(osRegisterDto).ifPresent(osResponseDto -> {
-				view.fillFields(osResponseDto);
 				view.setFormStatus(FormStatus.UPDATE_BLOCKED);
+				view.fillFields(osResponseDto);
 				
 				JOptionPane.showMessageDialog(view, "OS salva com sucesso!");
 			});			
@@ -43,21 +44,38 @@ public class OSFormController {
 		}
 	}
 	
-	public void searchCustomer() {
+	public void updateOS(OSUpdateDto osUpdateDto) {
+		try {
+			osService.update(osUpdateDto);
+			view.setFormStatus(FormStatus.UPDATE_BLOCKED);
+
+			JOptionPane.showMessageDialog(view, "OS atualizada com sucesso!");
+		} catch (IllegalArgumentException | BusinessException e) {
+			JOptionPane.showMessageDialog(view, e.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(view, "Erro inesperado: " + e.getMessage(), "Erro",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public boolean searchCustomer() {
 		SearchView searchView = ScreenFactory.createSearchView();
 		searchView.setTitle("Selecionar cliente");
 		searchView.setFilters("Nome");
 		searchView.setTableHeaders("ID", "NOME", "TELEFONE");
 		searchView.onSearch((filter, text) -> {
-			customerList = osService.getCustomerByName(text);
+			customerList = osService.getCustomersByName(text);
 			searchView.updateTable(customerList, c -> new Object[] { c.id(), c.name(), c.phone() });
 		});
 		searchView.setVisible(true);
 
-		if (searchView.isSelectedRow()) {
+		boolean selectedCustomer = searchView.isSelectedRow();
+		if (selectedCustomer) {
 			CustomerResponseDto customerResponseDto = customerList.get(searchView.getSelectedIndex());	
 			view.setCustomer(customerResponseDto);
 		}
+		
+		return selectedCustomer;
 	}
 	
 	public void searchOS() {
@@ -85,7 +103,7 @@ public class OSFormController {
 				}
 				
 			} else if (filter.equals(CUSTOMER) && !text.isBlank()) {
-				osList = osService.getOSByCustomerName(text);				
+				osList = osService.getAllOSByCustomerName(text);				
 				searchView.updateTable(osList, o -> new Object[] { 
 						o.id(), o.customerResponseDto().name(), o.value(), o.status().getName() });				
 			}
@@ -98,7 +116,22 @@ public class OSFormController {
 			  view.fillFields(osResponseDto);
 			  view.setFormStatus(FormStatus.UPDATE_BLOCKED);
 		  }
-		 
+		  
+	}
+
+	public void deleteOS(long id) {
+		try {
+			osService.delete(id);
+			view.setFormStatus(FormStatus.INSERT_BLOCKED);
+			view.cleanFields();
+
+			JOptionPane.showMessageDialog(view, "OS excluida com sucesso!");
+		} catch (IllegalArgumentException | BusinessException e) {
+			JOptionPane.showMessageDialog(view, e.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(view, "Erro inesperado: " + e.getMessage(), "Erro",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 }

@@ -106,12 +106,6 @@ public class CustomerFormView extends AbstractFormView {
 	}
 
 	@Override
-	public void onSearch() {
-		controller.searchCustomer();
-		requestFocus();
-	}
-
-	@Override
 	public void onDelete() {
 		int option = JOptionPane.showConfirmDialog(this, "Deseja remover o cliente: " + txtName.getText(),
 				"Confirmaçãp", JOptionPane.YES_NO_OPTION);
@@ -119,7 +113,13 @@ public class CustomerFormView extends AbstractFormView {
 		if (option == JOptionPane.YES_OPTION) {
 			controller.deleteCustomer(Long.parseLong(txtCode.getText()));
 			requestFocus();
-		}
+		}		
+	}
+	
+	@Override
+	public void onSearch() {
+		controller.searchCustomer();
+		requestFocus();
 	}
 
 	@Override

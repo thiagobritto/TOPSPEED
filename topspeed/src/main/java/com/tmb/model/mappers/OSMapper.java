@@ -3,6 +3,7 @@ package com.tmb.model.mappers;
 import com.tmb.dto.CustomerResponseDto;
 import com.tmb.dto.OSRegisterDto;
 import com.tmb.dto.OSResponseDto;
+import com.tmb.dto.OSUpdateDto;
 import com.tmb.model.entities.Customer;
 import com.tmb.model.entities.OS;
 
@@ -36,6 +37,31 @@ public class OSMapper {
 				osRegisterDto.status());
 	}
 	
+	public static OS toEntity(OSUpdateDto osUpdateDto) {
+		if (osUpdateDto == null) {
+			return null;
+		}
+		
+		Customer customer = null;
+		
+		CustomerResponseDto customerResponseDto = osUpdateDto.customerResponseDto();
+		if (customerResponseDto != null) {
+			customer = new Customer(
+					customerResponseDto.id(), 
+					customerResponseDto.name(), 
+					customerResponseDto.phone(), 
+					customerResponseDto.address());
+		}
+		
+		return new OS(
+				osUpdateDto.id(), 
+				customer, 
+				osUpdateDto.description(), 
+				osUpdateDto.value(), 
+				null, // nulo para atualização
+				osUpdateDto.status());
+	}
+	
 	public static OSResponseDto toResponseDto(OS os) {
 		if (os == null) {
 			return null;
@@ -60,5 +86,5 @@ public class OSMapper {
 				os.getCreatedAt(), 
 				os.getStatus());
 	}
-	
+		
 }

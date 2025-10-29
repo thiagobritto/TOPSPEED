@@ -7,16 +7,16 @@ import java.util.function.Function;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-
-import org.sqlite.date.DateFormatUtils;
 
 import com.tmb.controller.OSFormController;
 import com.tmb.dto.CustomerResponseDto;
 import com.tmb.dto.OSRegisterDto;
 import com.tmb.dto.OSResponseDto;
+import com.tmb.dto.OSUpdateDto;
 import com.tmb.model.entities.OSStatus;
 import com.tmb.utils.DateTimeUtils;
 import com.tmb.view.components.PriceField;
@@ -88,7 +88,7 @@ public class OSFormView extends AbstractFormView {
 		formPanel.add(lblStatus);
 		
 		cbxOSStatus = new JComboBox<>(OSStatus.values());
-		cbxOSStatus.setBounds(455, 30, 150, 25);
+		cbxOSStatus.setBounds(455, 30, 179, 25);
 		formPanel.add(cbxOSStatus);
 		
 		JLabel lblDescription = new JLabel("Descrição");
@@ -114,11 +114,13 @@ public class OSFormView extends AbstractFormView {
 
 	@Override
 	public void onNew() {
-		cleanFields();
-		setFormStatus(FormStatus.INSERT_UNLOCKED);
+		if (controller.searchCustomer()) {
+			setFormStatus(FormStatus.INSERT_UNLOCKED);
+			cleanFields();
+			
+			txtDescription.requestFocus();			
+		}
 		
-		controller.searchCustomer();
-		txtDescription.requestFocus();
 	}
 
 	@Override
@@ -127,30 +129,39 @@ public class OSFormView extends AbstractFormView {
 		String description = txtDescription.getText();
 		BigDecimal value = new BigDecimal(txtValue.getText());
 		OSStatus osStatus = OSStatus.values()[cbxOSStatus.getSelectedIndex()];
-		OSRegisterDto osRegisterDto = new OSRegisterDto(customerResponseDto, description, value, osStatus);
 		
 		if (id.isBlank()) {
+			OSRegisterDto osRegisterDto = new OSRegisterDto(customerResponseDto, description, value, osStatus);
 			controller.saveOS(osRegisterDto);
 		} else {
-			// update
+			OSUpdateDto osUpdateDto = new OSUpdateDto(Long.parseLong(id), customerResponseDto, description, value, osStatus);
+			controller.updateOS(osUpdateDto);
 		}
+		
+		requestFocus();
 	}
 
 	@Override
 	public void onEdit() {
-		// TODO Auto-generated method stub
-
+		setFormStatus(FormStatus.UPDATE_UNLOCKED);
 	}
 
 	@Override
 	public void onDelete() {
-		// TODO Auto-generated method stub
+		String idOs = txtOsId.getText();
+		int option = JOptionPane.showConfirmDialog(this, "Deseja excluir a SO: " + idOs,
+				"Confirmação", JOptionPane.YES_NO_OPTION);
 
+		if (option == JOptionPane.YES_OPTION) {
+			controller.deleteOS(Long.parseLong(idOs));
+			requestFocus();
+		}
 	}
 
 	@Override
 	public void onSearch() {
 		controller.searchOS();
+		requestFocus();
 	}
 
 	@Override
