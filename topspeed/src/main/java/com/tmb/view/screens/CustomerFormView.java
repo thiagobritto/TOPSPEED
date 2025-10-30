@@ -3,6 +3,7 @@ package com.tmb.view.screens;
 import java.awt.BorderLayout;
 import java.util.function.Function;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -13,6 +14,7 @@ import com.tmb.controller.CustomerFormController;
 import com.tmb.dto.CustomerRegisterDto;
 import com.tmb.dto.CustomerResponseDto;
 import com.tmb.dto.CustomerUpdateDto;
+import com.tmb.view.styles.FontStyle;
 
 public class CustomerFormView extends AbstractFormView {
 
@@ -30,43 +32,43 @@ public class CustomerFormView extends AbstractFormView {
 	}
 
 	private void initComponents() {
-		setTitle("Cadastro de clientes");
+		setTitle("Cadastro de Clientes");
 
-		JPanel formPanel = new JPanel(null);
-		getContentPane().add(formPanel, BorderLayout.CENTER);
+		JPanel form = new JPanel(null);
+		formPanel.add(form, BorderLayout.CENTER);
 
 		JLabel lblCode = new JLabel("ID:");
 		lblCode.setBounds(10, 10, 34, 15);
-		formPanel.add(lblCode);
+		form.add(lblCode);
 
 		txtCode = new JTextField();
 		txtCode.setBounds(10, 30, 50, 25);
 		txtCode.setEditable(false);
-		formPanel.add(txtCode);
+		form.add(txtCode);
 
 		JLabel lblName = new JLabel("Nome: *");
 		lblName.setBounds(70, 10, 112, 15);
-		formPanel.add(lblName);
+		form.add(lblName);
 
 		txtName = new JTextField();
 		txtName.setBounds(69, 30, 270, 25);
-		formPanel.add(txtName);
+		form.add(txtName);
 
 		JLabel lblPhone = new JLabel("Telefone:");
 		lblPhone.setBounds(351, 9, 112, 15);
-		formPanel.add(lblPhone);
+		form.add(lblPhone);
 
 		txtPhone = new JTextField();
 		txtPhone.setBounds(351, 30, 164, 25);
-		formPanel.add(txtPhone);
+		form.add(txtPhone);
 
 		JLabel lblAddress = new JLabel("Endereço:");
 		lblAddress.setBounds(10, 60, 112, 15);
-		formPanel.add(lblAddress);
+		form.add(lblAddress);
 
 		txtAddress = new JTextField();
 		txtAddress.setBounds(10, 80, 505, 25);
-		formPanel.add(txtAddress);
+		form.add(txtAddress);
 
 		SwingUtilities.invokeLater(() -> setFormStatus(FormStatus.INSERT_BLOCKED));
 	}

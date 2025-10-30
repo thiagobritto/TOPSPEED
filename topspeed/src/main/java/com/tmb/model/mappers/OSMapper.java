@@ -31,7 +31,9 @@ public class OSMapper {
 		
 		return new OS(0, 
 				customer, 
+				osRegisterDto.item(), 
 				osRegisterDto.description(), 
+				osRegisterDto.service(), 
 				osRegisterDto.value(), 
 				null, // nulo para registro
 				osRegisterDto.status());
@@ -56,7 +58,9 @@ public class OSMapper {
 		return new OS(
 				osUpdateDto.id(), 
 				customer, 
+				osUpdateDto.item(), 
 				osUpdateDto.description(), 
+				osUpdateDto.service(), 
 				osUpdateDto.value(), 
 				null, // nulo para atualização
 				osUpdateDto.status());
@@ -81,7 +85,9 @@ public class OSMapper {
 		return new OSResponseDto(
 				os.getId(), 
 				customerResponseDto, 
+				os.getItem(), 
 				os.getDescription(), 
+				os.getService(), 
 				os.getValue(), 
 				os.getCreatedAt(), 
 				os.getStatus());

@@ -11,11 +11,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.tmb.App;
 import com.tmb.view.components.CardPanel;
 
 public class HomeView extends JInternalFrame {
@@ -31,10 +33,12 @@ public class HomeView extends JInternalFrame {
 	}
 
 	private void initComponents() {
+		((BasicInternalFrameUI)getUI()).setNorthPane(null);
 		setFrameIcon(null);
-		setTitle("Home");
 		setSize(788, 600);
+		setTitle("Home");
 		maximizedOnOpen();
+		
 		
 		contentPane = new JPanel(new BorderLayout(10, 10));
 		setContentPane(contentPane);
@@ -99,6 +103,11 @@ public class HomeView extends JInternalFrame {
 		JTextArea textArea = new JTextArea();
 		panel_2.add(new JScrollPane(textArea), BorderLayout.CENTER);
 		
+	}
+	
+	@Override
+	public void setTitle(String title) {
+		App.getMainView().setTitle(title);
 	}
 	
 	private void maximizedOnOpen() {

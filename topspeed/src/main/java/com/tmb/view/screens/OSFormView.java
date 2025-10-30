@@ -44,70 +44,70 @@ public class OSFormView extends AbstractFormView {
 	private void initComponents() {
 		setTitle("Cadastro de OS");
 
-		JPanel formPanel = new JPanel(null);
-		getContentPane().add(formPanel, BorderLayout.CENTER);
+		JPanel form = new JPanel(null);
+		formPanel.add(form, BorderLayout.CENTER);
 		
 		JLabel lblOs = new JLabel("OS");
 		lblOs.setBounds(10, 10, 60, 15);
-		formPanel.add(lblOs);
+		form.add(lblOs);
 		
 		txtOsId = new JTextField();
 		txtOsId.setEditable(false);
 		txtOsId.setBounds(10, 30, 60, 25);
-		formPanel.add(txtOsId);
+		form.add(txtOsId);
 		txtOsId.setColumns(10);
 		
 		JLabel lblCustomer = new JLabel("Cliente");
 		lblCustomer.setBounds(80, 10, 60, 15);
-		formPanel.add(lblCustomer);
+		form.add(lblCustomer);
 		
 		txtCustomerName = new JTextField();
 		txtCustomerName.setEditable(false);
 		txtCustomerName.setColumns(10);
 		txtCustomerName.setBounds(80, 30, 200, 25);
-		formPanel.add(txtCustomerName);
+		form.add(txtCustomerName);
 		
 		btnSearchCustomer = new JButton("...");
 		btnSearchCustomer.setToolTipText("Localizar cliente");
 		btnSearchCustomer.setBounds(290, 30, 25, 25);
 		btnSearchCustomer.addActionListener(e -> controller.searchCustomer());
-		formPanel.add(btnSearchCustomer);
+		form.add(btnSearchCustomer);
 		
 		JLabel lblDate = new JLabel("Data");
 		lblDate.setBounds(325, 10, 60, 15);
-		formPanel.add(lblDate);
+		form.add(lblDate);
 		
 		txtDate = new JTextField();
 		txtDate.setEditable(false);
 		txtDate.setColumns(10);
 		txtDate.setBounds(325, 30, 120, 25);
-		formPanel.add(txtDate);
+		form.add(txtDate);
 		
 		JLabel lblStatus = new JLabel("Status");
 		lblStatus.setBounds(455, 10, 60, 15);
-		formPanel.add(lblStatus);
+		form.add(lblStatus);
 		
 		cbxOSStatus = new JComboBox<>(OSStatus.values());
 		cbxOSStatus.setBounds(455, 30, 179, 25);
-		formPanel.add(cbxOSStatus);
+		form.add(cbxOSStatus);
 		
 		JLabel lblDescription = new JLabel("Descrição");
 		lblDescription.setBounds(10, 60, 85, 15);
-		formPanel.add(lblDescription);
+		form.add(lblDescription);
 		
 		txtDescription = new JTextField();
 		txtDescription.setColumns(10);
 		txtDescription.setBounds(10, 80, 305, 25);
-		formPanel.add(txtDescription);
+		form.add(txtDescription);
 		
 		JLabel lblValue = new JLabel("Valor R$");
 		lblValue.setBounds(325, 60, 60, 15);
-		formPanel.add(lblValue);
+		form.add(lblValue);
 		
 		txtValue = new PriceField();
 		txtValue.setColumns(10);
 		txtValue.setBounds(325, 80, 120, 25);
-		formPanel.add(txtValue);
+		form.add(txtValue);
 		
 		SwingUtilities.invokeLater(() -> setFormStatus(FormStatus.INSERT_BLOCKED));
 	}
@@ -131,10 +131,10 @@ public class OSFormView extends AbstractFormView {
 		OSStatus osStatus = OSStatus.values()[cbxOSStatus.getSelectedIndex()];
 		
 		if (id.isBlank()) {
-			OSRegisterDto osRegisterDto = new OSRegisterDto(customerResponseDto, description, value, osStatus);
+			OSRegisterDto osRegisterDto = new OSRegisterDto(customerResponseDto, null, description, null, value, osStatus);
 			controller.saveOS(osRegisterDto);
 		} else {
-			OSUpdateDto osUpdateDto = new OSUpdateDto(Long.parseLong(id), customerResponseDto, description, value, osStatus);
+			OSUpdateDto osUpdateDto = new OSUpdateDto(Long.parseLong(id), customerResponseDto, null, description, null, value, osStatus);
 			controller.updateOS(osUpdateDto);
 		}
 		

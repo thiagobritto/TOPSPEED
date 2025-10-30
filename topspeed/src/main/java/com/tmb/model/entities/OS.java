@@ -12,7 +12,9 @@ public class OS {
 
 	private long id;
 	private Customer customer;
+	private String item;
 	private String description;
+	private String service;
 	private BigDecimal value;
 	private LocalDateTime createdAt;
 	private OSStatus status;

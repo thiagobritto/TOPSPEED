@@ -13,10 +13,11 @@ public class CustomerMapper {
 	}
 
 	public static Customer toEntity(CustomerRegisterDto customerRegisterDto) {
-		return new Customer(0, 
-				customerRegisterDto.name(), 
-				customerRegisterDto.phone(), 
-				customerRegisterDto.address());
+		return new Customer(
+				0, 
+				StringUtils.nullIfEmpty(customerRegisterDto.name()), 
+				StringUtils.nullIfEmpty(customerRegisterDto.phone()), 
+				StringUtils.nullIfEmpty(customerRegisterDto.address()));
 	}
 
 	public static Customer toEntity(CustomerUpdateDto customerUpdateDto) {

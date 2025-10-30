@@ -23,15 +23,28 @@ public class OSDao {
 
 	// insert
 	public void insert(OS os) throws SQLException {
-		String sql = "INSERT INTO TB_OS (ID_CUSTOMER, DESCRIPTION, VALUE, STATUS) VALUES (?, ?, ?, ?)";
+		String sql = """
+			INSERT INTO TB_OS (
+				ID_CUSTOMER, 
+				ITEM_REPAIR, 
+				DESCRIPTION, 
+				SERVICE, 
+				VALUE, 
+				STATUS
+			) VALUES (?, ?, ?, ?, ?, ?)
+		""";
+		
+		int index = 1;
 
 		try (Connection conn = db.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-			stmt.setLong(1, os.getCustomer().getId());
-			stmt.setString(2, os.getDescription());
-			stmt.setBigDecimal(3, os.getValue());
-			stmt.setString(4, os.getStatus().getName());
+			stmt.setLong(index++, os.getCustomer().getId());
+			stmt.setString(index++, os.getItem());
+			stmt.setString(index++, os.getDescription());
+			stmt.setString(index++, os.getService());
+			stmt.setBigDecimal(index++, os.getValue());
+			stmt.setString(index++, os.getStatus().getName());
 			stmt.executeUpdate();
 
 			try (ResultSet rs = stmt.getGeneratedKeys()) {
@@ -59,15 +72,28 @@ public class OSDao {
 	// findAll
 	// update
 	public void update(OS os) throws SQLException {
-		String sql = "UPDATE TB_OS SET ID_CUSTOMER = ?, DESCRIPTION = ?, VALUE = ?, STATUS = ? WHERE ID = ?";
+		String sql = """
+			UPDATE TB_OS SET 
+				ID_CUSTOMER = ?, 
+				ITEM_REPAIR = ?, 
+				DESCRIPTION = ?, 
+				SERVICE = ?, 
+				VALUE = ?, 
+				STATUS = ? 
+			WHERE ID = ?
+		""";
+		
+		int index = 1;
 
 		try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-			stmt.setLong(1, os.getCustomer().getId());
-			stmt.setString(2, os.getDescription());
-			stmt.setBigDecimal(3, os.getValue());
-			stmt.setString(4, os.getStatus().getName());
-			stmt.setLong(5, os.getId());
+			stmt.setLong(index++, os.getCustomer().getId());
+			stmt.setString(index++, os.getItem());
+			stmt.setString(index++, os.getDescription());
+			stmt.setString(index++, os.getService());
+			stmt.setBigDecimal(index++, os.getValue());
+			stmt.setString(index++, os.getStatus().getName());
+			stmt.setLong(index++, os.getId());
 			stmt.executeUpdate();
 
 		}
@@ -89,10 +115,12 @@ public class OSDao {
 	public OS findById(long id) throws SQLException {
 		String sql = """
 		        SELECT 
+		            TB_OS.ITEM_REPAIR,
 		            TB_OS.DESCRIPTION,
+		            TB_OS.SERVICE,
 		            TB_OS.VALUE,
-		            TB_OS.CREATED_AT,
 		            TB_OS.STATUS,
+		            TB_OS.CREATED_AT,
 		            TB_CUSTOMER.ID AS CUSTOMER_ID,
 		            TB_CUSTOMER.NAME,
 		            TB_CUSTOMER.PHONE,
@@ -122,7 +150,9 @@ public class OSDao {
 				OS os = new OS(
 						id, 
 						customer, 
+						rs.getString("ITEM_REPAIR"), 
 						rs.getString("DESCRIPTION"), 
+						rs.getString("SERVICE"), 
 						rs.getBigDecimal("VALUE"), 
 						DateTimeUtils.parseSQLiteDate(rs.getString("CREATED_AT")), 
 						OSStatus.fromName(rs.getString("STATUS")));
@@ -138,10 +168,12 @@ public class OSDao {
 		String sql = """
 		        SELECT 
 		            TB_OS.ID AS OS_ID,
+		            TB_OS.ITEM_REPAIR,
 		            TB_OS.DESCRIPTION,
+		            TB_OS.SERVICE,
 		            TB_OS.VALUE,
-		            TB_OS.CREATED_AT,
 		            TB_OS.STATUS,
+		            TB_OS.CREATED_AT,
 		            TB_CUSTOMER.ID AS CUSTOMER_ID,
 		            TB_CUSTOMER.NAME,
 		            TB_CUSTOMER.PHONE,
@@ -168,7 +200,9 @@ public class OSDao {
 					OS os = new OS(
 							rs.getLong("OS_ID"), 
 							customer, 
+							rs.getString("ITEM_REPAIR"), 
 							rs.getString("DESCRIPTION"), 
+							rs.getString("SERVICE"), 
 							rs.getBigDecimal("VALUE"), 
 							DateTimeUtils.parseSQLiteDate(rs.getString("CREATED_AT")), 
 							OSStatus.fromName(rs.getString("STATUS")));

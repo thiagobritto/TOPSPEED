@@ -4,7 +4,12 @@ import java.math.BigDecimal;
 
 import com.tmb.model.entities.OSStatus;
 
-public record OSRegisterDto(CustomerResponseDto customerResponseDto, String description, BigDecimal value,
+public record OSRegisterDto(
+		CustomerResponseDto customerResponseDto, 
+		String item, 
+		String description, 
+		String service, 
+		BigDecimal value,
 		OSStatus status) {
 
 }

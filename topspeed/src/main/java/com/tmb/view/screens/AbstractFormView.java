@@ -8,12 +8,16 @@ import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.tmb.App;
 import com.tmb.view.components.ButtonNavBar;
+import com.tmb.view.styles.FontStyle;
 
 public abstract class AbstractFormView extends JInternalFrame {
 
@@ -21,6 +25,7 @@ public abstract class AbstractFormView extends JInternalFrame {
 	private static final Logger logger = LogManager.getLogger(AbstractFormView.class);
 	private JPanel contentPane;
 	protected JPanel buttonPanel;
+	protected JPanel formPanel;
 	private ButtonNavBar btnNew;
 	private ButtonNavBar btnSave;
 	private ButtonNavBar btnEdit;
@@ -28,11 +33,13 @@ public abstract class AbstractFormView extends JInternalFrame {
 	private ButtonNavBar btnSearch;
 	private ButtonNavBar btnCancel;
 	private FormStatus formStatus;
+	private JLabel lblTitle;
 
 	public AbstractFormView() {
+		setSize(788, 600);
 		setFrameIcon(null);
 		setClosable(true);
-		setSize(788, 600);
+		((BasicInternalFrameUI)getUI()).setNorthPane(null);
 		maximizedOnOpen();
 
 		contentPane = new JPanel(new BorderLayout(0, 0));
@@ -77,6 +84,18 @@ public abstract class AbstractFormView extends JInternalFrame {
 		btnCancel.setIcon(new ImageIcon(CustomerFormView.class.getResource("/images/icons/cancel_icon_28x28.png")));
 		btnCancel.addActionListener(e -> onCancel());
 		buttonPanel.add(btnCancel);
+		
+		formPanel = new JPanel(new BorderLayout(0, 0));
+		getContentPane().add(formPanel, BorderLayout.CENTER);
+		
+		JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+		titlePanel.setBackground(new Color(255, 128, 0));
+		formPanel.add(titlePanel, BorderLayout.NORTH);
+		
+		lblTitle = new JLabel(getTitle());
+		lblTitle.setFont(new FontStyle(FontStyle.BOLD, FontStyle.SIZE_H2));
+		lblTitle.setForeground(Color.WHITE);
+		titlePanel.add(lblTitle);
 	}
 	
 	public abstract void onNew();
@@ -85,6 +104,13 @@ public abstract class AbstractFormView extends JInternalFrame {
 	public abstract void onDelete();
 	public abstract void onSearch();
 	public abstract void onCancel();
+	
+	@Override
+	public void setTitle(String title) {
+		super.setTitle(title);
+		lblTitle.setText(title);
+		App.getMainView().setTitle(title);
+	}
 	
 	public void setFormStatus(FormStatus status) {
 		formStatus = status;
