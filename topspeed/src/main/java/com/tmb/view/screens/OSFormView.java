@@ -20,6 +20,7 @@ import com.tmb.dto.OSUpdateDto;
 import com.tmb.model.entities.OSStatus;
 import com.tmb.utils.DateTimeUtils;
 import com.tmb.view.components.PriceField;
+import javax.swing.JRadioButton;
 
 public class OSFormView extends AbstractFormView {
 
@@ -35,6 +36,8 @@ public class OSFormView extends AbstractFormView {
 	private JButton btnSearchCustomer;
 	
 	private CustomerResponseDto customerResponseDto;
+	private JTextField txtService;
+	private JTextField txtItemRepair;
 
 	public OSFormView(Function<OSFormView, OSFormController> controller) {
 		this.controller = controller.apply(this);
@@ -47,7 +50,7 @@ public class OSFormView extends AbstractFormView {
 		JPanel form = new JPanel(null);
 		formPanel.add(form, BorderLayout.CENTER);
 		
-		JLabel lblOs = new JLabel("OS");
+		JLabel lblOs = new JLabel("Nº");
 		lblOs.setBounds(10, 10, 60, 15);
 		form.add(lblOs);
 		
@@ -55,58 +58,70 @@ public class OSFormView extends AbstractFormView {
 		txtOsId.setEditable(false);
 		txtOsId.setBounds(10, 30, 60, 25);
 		form.add(txtOsId);
-		txtOsId.setColumns(10);
 		
 		JLabel lblCustomer = new JLabel("Cliente");
-		lblCustomer.setBounds(80, 10, 60, 15);
+		lblCustomer.setBounds(82, 10, 60, 15);
 		form.add(lblCustomer);
 		
 		txtCustomerName = new JTextField();
 		txtCustomerName.setEditable(false);
-		txtCustomerName.setColumns(10);
-		txtCustomerName.setBounds(80, 30, 200, 25);
+		txtCustomerName.setBounds(82, 30, 200, 25);
 		form.add(txtCustomerName);
 		
 		btnSearchCustomer = new JButton("...");
 		btnSearchCustomer.setToolTipText("Localizar cliente");
-		btnSearchCustomer.setBounds(290, 30, 25, 25);
+		btnSearchCustomer.setBounds(292, 30, 25, 25);
 		btnSearchCustomer.addActionListener(e -> controller.searchCustomer());
 		form.add(btnSearchCustomer);
 		
 		JLabel lblDate = new JLabel("Data");
-		lblDate.setBounds(325, 10, 60, 15);
+		lblDate.setBounds(327, 10, 60, 15);
 		form.add(lblDate);
 		
 		txtDate = new JTextField();
 		txtDate.setEditable(false);
-		txtDate.setColumns(10);
-		txtDate.setBounds(325, 30, 120, 25);
+		txtDate.setBounds(327, 30, 120, 25);
 		form.add(txtDate);
 		
 		JLabel lblStatus = new JLabel("Status");
-		lblStatus.setBounds(455, 10, 60, 15);
+		lblStatus.setBounds(457, 10, 60, 15);
 		form.add(lblStatus);
 		
 		cbxOSStatus = new JComboBox<>(OSStatus.values());
-		cbxOSStatus.setBounds(455, 30, 179, 25);
+		cbxOSStatus.setBounds(457, 30, 179, 25);
 		form.add(cbxOSStatus);
 		
+		JLabel lblItemRepair = new JLabel("Equipamento *");
+		lblItemRepair.setBounds(10, 60, 120, 15);
+		form.add(lblItemRepair);
+		
+		txtItemRepair = new JTextField();
+		txtItemRepair.setBounds(10, 80, 307, 25);
+		form.add(txtItemRepair);
+		
 		JLabel lblDescription = new JLabel("Descrição");
-		lblDescription.setBounds(10, 60, 85, 15);
+		lblDescription.setBounds(327, 60, 120, 15);
 		form.add(lblDescription);
 		
 		txtDescription = new JTextField();
-		txtDescription.setColumns(10);
-		txtDescription.setBounds(10, 80, 305, 25);
+		txtDescription.setBounds(327, 80, 309, 25);
 		form.add(txtDescription);
 		
-		JLabel lblValue = new JLabel("Valor R$");
-		lblValue.setBounds(325, 60, 60, 15);
+		JLabel lblService = new JLabel("Serviço");
+		lblService.setBounds(10, 110, 85, 15);
+		form.add(lblService);
+		
+		txtService = new JTextField();
+		txtService.setBounds(10, 130, 307, 25);
+		form.add(txtService);
+		
+		JLabel lblValue = new JLabel("Valor R$ *");
+		lblValue.setBounds(327, 110, 60, 15);
 		form.add(lblValue);
 		
 		txtValue = new PriceField();
 		txtValue.setColumns(10);
-		txtValue.setBounds(325, 80, 120, 25);
+		txtValue.setBounds(327, 130, 120, 25);
 		form.add(txtValue);
 		
 		SwingUtilities.invokeLater(() -> setFormStatus(FormStatus.INSERT_BLOCKED));
@@ -118,7 +133,7 @@ public class OSFormView extends AbstractFormView {
 			setFormStatus(FormStatus.INSERT_UNLOCKED);
 			cleanFields();
 			
-			txtDescription.requestFocus();			
+			txtItemRepair.requestFocus();			
 		}
 		
 	}
@@ -126,15 +141,17 @@ public class OSFormView extends AbstractFormView {
 	@Override
 	public void onSave() {
 		String id = txtOsId.getText();
+		String item = txtItemRepair.getText();
 		String description = txtDescription.getText();
+		String service = txtService.getText();
 		BigDecimal value = new BigDecimal(txtValue.getText());
 		OSStatus osStatus = OSStatus.values()[cbxOSStatus.getSelectedIndex()];
 		
 		if (id.isBlank()) {
-			OSRegisterDto osRegisterDto = new OSRegisterDto(customerResponseDto, null, description, null, value, osStatus);
+			OSRegisterDto osRegisterDto = new OSRegisterDto(customerResponseDto, item, description, service, value, osStatus);
 			controller.saveOS(osRegisterDto);
 		} else {
-			OSUpdateDto osUpdateDto = new OSUpdateDto(Long.parseLong(id), customerResponseDto, null, description, null, value, osStatus);
+			OSUpdateDto osUpdateDto = new OSUpdateDto(Long.parseLong(id), customerResponseDto, item, description, service, value, osStatus);
 			controller.updateOS(osUpdateDto);
 		}
 		
@@ -182,7 +199,9 @@ public class OSFormView extends AbstractFormView {
 		txtOsId.setText("");
 		txtCustomerName.setText("");
 		txtDate.setText("");
+		txtItemRepair.setText("");
 		txtDescription.setText("");
+		txtService.setText("");
 		txtValue.setText("");
 		cbxOSStatus.setSelectedIndex(0);
 	}
@@ -191,7 +210,9 @@ public class OSFormView extends AbstractFormView {
 		txtOsId.setText(Long.toString(osResponseDto.id()));
 		txtCustomerName.setText(osResponseDto.customerResponseDto().name());
 		txtDate.setText(DateTimeUtils.formatForDisplay(osResponseDto.createdAt()));
+		txtItemRepair.setText(osResponseDto.item());
 		txtDescription.setText(osResponseDto.description());
+		txtService.setText(osResponseDto.service());
 		txtValue.setText(osResponseDto.value().toString());
 		cbxOSStatus.setSelectedIndex(osResponseDto.status().ordinal());
 	}
@@ -202,7 +223,9 @@ public class OSFormView extends AbstractFormView {
 		btnSearchCustomer.setEnabled(enabled);
 		txtDate.setEnabled(enabled);
 		cbxOSStatus.setEnabled(enabled);
+		txtItemRepair.setEnabled(enabled);
 		txtDescription.setEnabled(enabled);
+		txtService.setEnabled(enabled);
 		txtValue.setEnabled(enabled);
 	}
 	
@@ -210,5 +233,4 @@ public class OSFormView extends AbstractFormView {
 		this.customerResponseDto = customerResponseDto;
 		txtCustomerName.setText(customerResponseDto.name());
 	}
-
 }

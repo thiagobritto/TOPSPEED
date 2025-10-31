@@ -6,12 +6,19 @@ import com.tmb.dto.OSResponseDto;
 import com.tmb.dto.OSUpdateDto;
 import com.tmb.model.entities.Customer;
 import com.tmb.model.entities.OS;
+import com.tmb.utils.StringUtils;
 
 public class OSMapper {
 
 	private OSMapper() {
 		// static
 	}
+	
+	/**
+	 * 
+	 * @param osRegisterDto
+	 * @return
+	 */
 	
 	public static OS toEntity(OSRegisterDto osRegisterDto) {
 		if (osRegisterDto == null) {
@@ -29,15 +36,22 @@ public class OSMapper {
 					customerResponseDto.address());
 		}
 		
-		return new OS(0, 
+		return new OS(
+				0, 
 				customer, 
-				osRegisterDto.item(), 
-				osRegisterDto.description(), 
-				osRegisterDto.service(), 
+				StringUtils.nullIfEmpty(osRegisterDto.item()), 
+				StringUtils.nullIfEmpty(osRegisterDto.description()), 
+				StringUtils.nullIfEmpty(osRegisterDto.service()), 
 				osRegisterDto.value(), 
 				null, // nulo para registro
 				osRegisterDto.status());
 	}
+	
+	/**
+	 * 
+	 * @param osUpdateDto
+	 * @return
+	 */
 	
 	public static OS toEntity(OSUpdateDto osUpdateDto) {
 		if (osUpdateDto == null) {
@@ -58,13 +72,19 @@ public class OSMapper {
 		return new OS(
 				osUpdateDto.id(), 
 				customer, 
-				osUpdateDto.item(), 
-				osUpdateDto.description(), 
-				osUpdateDto.service(), 
+				StringUtils.nullIfEmpty(osUpdateDto.item()), 
+				StringUtils.nullIfEmpty(osUpdateDto.description()), 
+				StringUtils.nullIfEmpty(osUpdateDto.service()), 
 				osUpdateDto.value(), 
 				null, // nulo para atualização
 				osUpdateDto.status());
 	}
+	
+	/**
+	 * 
+	 * @param os
+	 * @return
+	 */
 	
 	public static OSResponseDto toResponseDto(OS os) {
 		if (os == null) {

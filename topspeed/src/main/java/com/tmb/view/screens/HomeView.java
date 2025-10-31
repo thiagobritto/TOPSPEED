@@ -55,7 +55,7 @@ public class HomeView extends JInternalFrame {
 		card_1.setBottonText("Relatorio de venda de hoje.");
 		header.add(card_1);
 		
-		CardPanel card_2 = new CardPanel(new Color(255,140,0));
+		CardPanel card_2 = new CardPanel(new Color(255,128,0));
 		card_2.setTextColor(Color.WHITE);
 		card_2.setTopText("Vendas");
 		header.add(card_2);

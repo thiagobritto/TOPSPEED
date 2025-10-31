@@ -37,7 +37,7 @@ public class CustomerFormView extends AbstractFormView {
 		JPanel form = new JPanel(null);
 		formPanel.add(form, BorderLayout.CENTER);
 
-		JLabel lblCode = new JLabel("ID:");
+		JLabel lblCode = new JLabel("ID");
 		lblCode.setBounds(10, 10, 34, 15);
 		form.add(lblCode);
 
@@ -46,7 +46,7 @@ public class CustomerFormView extends AbstractFormView {
 		txtCode.setEditable(false);
 		form.add(txtCode);
 
-		JLabel lblName = new JLabel("Nome: *");
+		JLabel lblName = new JLabel("Nome *");
 		lblName.setBounds(70, 10, 112, 15);
 		form.add(lblName);
 
@@ -54,7 +54,7 @@ public class CustomerFormView extends AbstractFormView {
 		txtName.setBounds(69, 30, 270, 25);
 		form.add(txtName);
 
-		JLabel lblPhone = new JLabel("Telefone:");
+		JLabel lblPhone = new JLabel("Telefone");
 		lblPhone.setBounds(351, 9, 112, 15);
 		form.add(lblPhone);
 
@@ -62,7 +62,7 @@ public class CustomerFormView extends AbstractFormView {
 		txtPhone.setBounds(351, 30, 164, 25);
 		form.add(txtPhone);
 
-		JLabel lblAddress = new JLabel("Endereço:");
+		JLabel lblAddress = new JLabel("Endereço");
 		lblAddress.setBounds(10, 60, 112, 15);
 		form.add(lblAddress);
 

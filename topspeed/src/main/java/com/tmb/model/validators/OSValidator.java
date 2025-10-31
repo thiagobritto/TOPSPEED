@@ -19,6 +19,11 @@ public class OSValidator {
 		if (osRegisterDto.customerResponseDto().id() < 1) {
 			throw new IllegalArgumentException("O cliente não foi selecionado.");
 		}
+		
+		String item = osRegisterDto.item();
+		if (item == null || item.isBlank()) {
+			throw new IllegalArgumentException("Preencha todos os campos obrigatorios (*).");
+		}
 
 		BigDecimal value = osRegisterDto.value();
 		if (value == null || value.compareTo(BigDecimal.ZERO) < 1) {
@@ -41,6 +46,11 @@ public class OSValidator {
 
 		if (osUpdateDto.customerResponseDto().id() < 1) {
 			throw new IllegalArgumentException("O cliente não foi selecionado.");
+		}
+		
+		String item = osUpdateDto.item();
+		if (item == null || item.isBlank()) {
+			throw new IllegalArgumentException("Preencha todos os campos obrigatorios (*).");
 		}
 
 		BigDecimal value = osUpdateDto.value();
