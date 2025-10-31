@@ -1,6 +1,5 @@
 package com.tmb.view.screens;
 
-import java.awt.BorderLayout;
 import java.math.BigDecimal;
 import java.util.function.Function;
 
@@ -8,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -45,83 +43,81 @@ public class OSFormView extends AbstractFormView {
 
 	private void initComponents() {
 		setTitle("Cadastro de OS");
+		setContentPane(body);
 
-		JPanel form = new JPanel(null);
-		formPanel.add(form, BorderLayout.CENTER);
-		
 		JLabel lblOs = new JLabel("Nº");
 		lblOs.setBounds(10, 10, 60, 15);
-		form.add(lblOs);
+		sectionMain.add(lblOs);
 		
 		txtOsId = new JTextField();
 		txtOsId.setEditable(false);
 		txtOsId.setBounds(10, 30, 60, 25);
-		form.add(txtOsId);
+		sectionMain.add(txtOsId);
 		
 		JLabel lblCustomer = new JLabel("Cliente");
 		lblCustomer.setBounds(82, 10, 60, 15);
-		form.add(lblCustomer);
+		sectionMain.add(lblCustomer);
 		
 		txtCustomerName = new JTextField();
 		txtCustomerName.setEditable(false);
 		txtCustomerName.setBounds(82, 30, 200, 25);
-		form.add(txtCustomerName);
+		sectionMain.add(txtCustomerName);
 		
 		btnSearchCustomer = new JButton("...");
 		btnSearchCustomer.setToolTipText("Localizar cliente");
 		btnSearchCustomer.setBounds(292, 30, 25, 25);
 		btnSearchCustomer.addActionListener(e -> controller.searchCustomer());
-		form.add(btnSearchCustomer);
+		sectionMain.add(btnSearchCustomer);
 		
 		JLabel lblDate = new JLabel("Data");
 		lblDate.setBounds(327, 10, 60, 15);
-		form.add(lblDate);
+		sectionMain.add(lblDate);
 		
 		txtDate = new JTextField();
 		txtDate.setEditable(false);
 		txtDate.setBounds(327, 30, 120, 25);
-		form.add(txtDate);
+		sectionMain.add(txtDate);
 		
 		JLabel lblStatus = new JLabel("Status");
 		lblStatus.setBounds(457, 10, 60, 15);
-		form.add(lblStatus);
+		sectionMain.add(lblStatus);
 		
 		cbxOSStatus = new JComboBox<>(OSStatus.values());
 		cbxOSStatus.setBounds(457, 30, 179, 25);
-		form.add(cbxOSStatus);
+		sectionMain.add(cbxOSStatus);
 		
 		JLabel lblItemRepair = new JLabel("Equipamento *");
 		lblItemRepair.setBounds(10, 60, 120, 15);
-		form.add(lblItemRepair);
+		sectionMain.add(lblItemRepair);
 		
 		txtItemRepair = new JTextField();
 		txtItemRepair.setBounds(10, 80, 307, 25);
-		form.add(txtItemRepair);
+		sectionMain.add(txtItemRepair);
 		
 		JLabel lblDescription = new JLabel("Descrição");
 		lblDescription.setBounds(327, 60, 120, 15);
-		form.add(lblDescription);
+		sectionMain.add(lblDescription);
 		
 		txtDescription = new JTextField();
 		txtDescription.setBounds(327, 80, 309, 25);
-		form.add(txtDescription);
+		sectionMain.add(txtDescription);
 		
 		JLabel lblService = new JLabel("Serviço");
 		lblService.setBounds(10, 110, 85, 15);
-		form.add(lblService);
+		sectionMain.add(lblService);
 		
 		txtService = new JTextField();
 		txtService.setBounds(10, 130, 307, 25);
-		form.add(txtService);
+		sectionMain.add(txtService);
 		
 		JLabel lblValue = new JLabel("Valor R$ *");
 		lblValue.setBounds(327, 110, 60, 15);
-		form.add(lblValue);
+		sectionMain.add(lblValue);
 		
 		txtValue = new PriceField();
 		txtValue.setColumns(10);
 		txtValue.setBounds(327, 130, 120, 25);
-		form.add(txtValue);
+		sectionMain.add(txtValue);
 		
 		SwingUtilities.invokeLater(() -> setFormStatus(FormStatus.INSERT_BLOCKED));
 	}

@@ -19,6 +19,7 @@ public class LoginView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private final LoginController controller;
+	
 	private JPanel contentPane;
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;

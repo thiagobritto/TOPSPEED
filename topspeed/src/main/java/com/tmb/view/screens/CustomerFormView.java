@@ -1,11 +1,9 @@
 package com.tmb.view.screens;
 
-import java.awt.BorderLayout;
 import java.util.function.Function;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -31,42 +29,40 @@ public class CustomerFormView extends AbstractFormView {
 
 	private void initComponents() {
 		setTitle("Cadastro de Clientes");
-
-		JPanel form = new JPanel(null);
-		formPanel.add(form, BorderLayout.CENTER);
-
+		setContentPane(body);
+		
 		JLabel lblCode = new JLabel("ID");
 		lblCode.setBounds(10, 10, 34, 15);
-		form.add(lblCode);
+		sectionMain.add(lblCode);
 
 		txtCode = new JTextField();
 		txtCode.setBounds(10, 30, 50, 25);
 		txtCode.setEditable(false);
-		form.add(txtCode);
+		sectionMain.add(txtCode);
 
 		JLabel lblName = new JLabel("Nome *");
 		lblName.setBounds(70, 10, 112, 15);
-		form.add(lblName);
+		sectionMain.add(lblName);
 
 		txtName = new JTextField();
 		txtName.setBounds(69, 30, 270, 25);
-		form.add(txtName);
+		sectionMain.add(txtName);
 
 		JLabel lblPhone = new JLabel("Telefone");
 		lblPhone.setBounds(351, 9, 112, 15);
-		form.add(lblPhone);
+		sectionMain.add(lblPhone);
 
 		txtPhone = new JTextField();
 		txtPhone.setBounds(351, 30, 164, 25);
-		form.add(txtPhone);
+		sectionMain.add(txtPhone);
 
 		JLabel lblAddress = new JLabel("Endereço");
 		lblAddress.setBounds(10, 60, 112, 15);
-		form.add(lblAddress);
+		sectionMain.add(lblAddress);
 
 		txtAddress = new JTextField();
 		txtAddress.setBounds(10, 80, 505, 25);
-		form.add(txtAddress);
+		sectionMain.add(txtAddress);
 
 		SwingUtilities.invokeLater(() -> setFormStatus(FormStatus.INSERT_BLOCKED));
 	}
