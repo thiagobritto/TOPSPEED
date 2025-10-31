@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="os_report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f231025e-1b76-44cb-bb1a-05a83c5f2ffc">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="TOPSPEED"/>
+	<parameter name="OS_ID" class="java.lang.Long"/>
+	<parameter name="LOGO" class="java.awt.Image"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT "TB_CUSTOMER"."ID" AS "CUSTOMER_ID",
+	"TB_CUSTOMER"."NAME",
+	"TB_CUSTOMER"."PHONE",
+	"TB_CUSTOMER"."ADDRESS",
+	"TB_OS"."ID" AS "OS_ID",
+	"TB_OS"."STATUS",
+	"TB_OS"."ITEM_REPAIR",
+	"TB_OS"."DESCRIPTION",
+	"TB_OS"."SERVICE",
+	"TB_OS"."VALUE",
+	"TB_OS"."CREATED_AT"
+FROM "TB_OS"
+	LEFT JOIN "TB_CUSTOMER" ON 
+	 "TB_OS"."ID_CUSTOMER" = "TB_CUSTOMER"."ID" 
+WHERE 
+	 $X{EQUAL,"TB_OS"."ID",OS_ID}]]>
+	</queryString>
+	<field name="CUSTOMER_ID" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_ID"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_CUSTOMER"/>
+	</field>
+	<field name="NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="NAME"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_CUSTOMER"/>
+	</field>
+	<field name="PHONE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PHONE"/>
+		<property name="com.jaspersoft.studio.field.label" value="PHONE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_CUSTOMER"/>
+	</field>
+	<field name="ADDRESS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ADDRESS"/>
+		<property name="com.jaspersoft.studio.field.label" value="ADDRESS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_CUSTOMER"/>
+	</field>
+	<field name="OS_ID" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="OS_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="OS_ID"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_OS"/>
+	</field>
+	<field name="STATUS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="STATUS"/>
+		<property name="com.jaspersoft.studio.field.label" value="STATUS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_OS"/>
+	</field>
+	<field name="ITEM_REPAIR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ITEM_REPAIR"/>
+		<property name="com.jaspersoft.studio.field.label" value="ITEM_REPAIR"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_OS"/>
+	</field>
+	<field name="DESCRIPTION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DESCRIPTION"/>
+		<property name="com.jaspersoft.studio.field.label" value="DESCRIPTION"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_OS"/>
+	</field>
+	<field name="SERVICE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="SERVICE"/>
+		<property name="com.jaspersoft.studio.field.label" value="SERVICE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_OS"/>
+	</field>
+	<field name="VALUE" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="VALUE"/>
+		<property name="com.jaspersoft.studio.field.label" value="VALUE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_OS"/>
+	</field>
+	<field name="CREATED_AT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CREATED_AT"/>
+		<property name="com.jaspersoft.studio.field.label" value="CREATED_AT"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_OS"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="131" splitType="Stretch">
+			<staticText>
+				<reportElement x="120" y="0" width="260" height="30" uuid="18caf502-103d-4a1f-9bab-0c750e8497a2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Estabelecimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="31" width="260" height="15" uuid="16ea2663-2ef4-43f1-9b48-73392139fabc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Rua de exemplo, n 0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="46" width="260" height="15" uuid="18350b1d-f5cf-44d0-a817-14337e8a8973">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[(84) 00000-0000]]></text>
+			</staticText>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="0" width="80" height="80" uuid="5722e40c-697d-4825-907c-91f7072a2669">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

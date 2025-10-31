@@ -3,7 +3,6 @@ package com.tmb.view.screens;
 import java.awt.BorderLayout;
 import java.util.function.Function;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,7 +13,6 @@ import com.tmb.controller.CustomerFormController;
 import com.tmb.dto.CustomerRegisterDto;
 import com.tmb.dto.CustomerResponseDto;
 import com.tmb.dto.CustomerUpdateDto;
-import com.tmb.view.styles.FontStyle;
 
 public class CustomerFormView extends AbstractFormView {
 

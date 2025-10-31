@@ -2,7 +2,7 @@ package com.tmb.view.screens;
 
 import com.tmb.App;
 import com.tmb.controller.CustomerFormController;
-import com.tmb.controller.LoginController;
+import com.tmb.controller.MainController;
 import com.tmb.controller.OSFormController;
 import com.tmb.model.dao.CustomerDao;
 import com.tmb.model.dao.DatabaseConnection;
@@ -10,6 +10,7 @@ import com.tmb.model.dao.DatabaseFactory;
 import com.tmb.model.dao.OSDao;
 import com.tmb.model.services.CustomerService;
 import com.tmb.model.services.OSService;
+import com.tmb.model.services.ReportService;
 import com.tmb.model.validators.CustomerValidator;
 import com.tmb.model.validators.OSValidator;
 
@@ -38,8 +39,9 @@ public class ScreenFactory {
 		return new OSFormView(view -> new OSFormController(view, osService));
 	}
 	
-	public static LoginView createLoginView() {
-		return new LoginView(LoginController::new);
+	public static MainView createMainView() {
+		ReportService reportService = new ReportService(DatabaseFactory.createDatabase());
+		return new MainView(view -> new MainController(view, reportService));
 	}
 
 	public static SearchView createSearchView() {

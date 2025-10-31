@@ -1,11 +1,9 @@
 package com.tmb.view.screens;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Image;
+import java.util.function.Function;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -23,7 +21,7 @@ import javax.swing.SwingUtilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.tmb.model.services.ServiceFactory;
+import com.tmb.controller.MainController;
 import com.tmb.view.components.ButtonSidebar;
 import com.tmb.view.components.SidebarMainPanel;
 
@@ -31,12 +29,15 @@ public class MainView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LogManager.getLogger(MainView.class);
+	private final MainController controller;
+	
 	private String primaryTitle = "Dashboard";
 	private JPanel contentPane;
 	private JDesktopPane desktopPane;
 
-	public MainView() {
-		initComponents();
+	public MainView(Function<MainView, MainController> controller) {
+		this.controller = controller.apply(this);
+		this.initComponents();
 	}
 
 	private void initComponents() {
@@ -66,7 +67,7 @@ public class MainView extends JFrame {
 
 		JMenuItem mbReportCustomer = new JMenuItem("Clientes");
 		mbReportCustomer.addActionListener(e -> {
-			ServiceFactory.createReportService().generateCustomerReport();
+			controller.generateCustomerReport();
 		});
 		mnReports.add(mbReportCustomer);
 

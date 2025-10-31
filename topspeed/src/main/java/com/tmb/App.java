@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.tmb.view.screens.MainView;
+import com.tmb.view.screens.ScreenFactory;
 
 public class App {
 
@@ -13,7 +14,7 @@ public class App {
 		EventQueue.invokeLater(() -> {
 			try {
 				FlatLightLaf.setup();
-				mainView = new MainView();
+				mainView = ScreenFactory.createMainView();
 				mainView.setVisible(true);				
 			} catch (Exception e) {
 				e.printStackTrace();

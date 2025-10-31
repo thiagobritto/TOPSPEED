@@ -2,8 +2,6 @@ package com.tmb.view.screens;
 
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -11,13 +9,13 @@ import javax.swing.KeyStroke;
 
 import com.tmb.App;
 
-import net.sf.jasperreports.swing.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class ReportView extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
-	public ReportView(JRViewer viewer) {
+	public ReportView(JasperViewer viewer) {
 		super(App.getMainView(), "Relatórios", true);
 		setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		setIconImage(null);
@@ -27,7 +25,7 @@ public class ReportView extends JDialog {
 		KeyStroke escapeKey = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
 		getRootPane().registerKeyboardAction(e -> dispose(), escapeKey, JComponent.WHEN_IN_FOCUSED_WINDOW);
 		
-		getContentPane().add(viewer);
+		getContentPane().add(viewer.getContentPane());
 	}
 
 	

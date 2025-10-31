@@ -20,7 +20,6 @@ import com.tmb.dto.OSUpdateDto;
 import com.tmb.model.entities.OSStatus;
 import com.tmb.utils.DateTimeUtils;
 import com.tmb.view.components.PriceField;
-import javax.swing.JRadioButton;
 
 public class OSFormView extends AbstractFormView {
 
